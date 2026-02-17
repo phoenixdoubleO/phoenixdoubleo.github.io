@@ -1,4 +1,4 @@
-/* Font import */
+/* 1️⃣ Font import */
 @font-face {
   font-family: 'Splatoon1';
   src: url('Splatoon1.otf') format('opentype');
@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-/* Body */
+/* 2️⃣ Body */
 body {
   margin: 0;
   padding: 0;
@@ -17,7 +17,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Top title */
+/* 3️⃣ Top title */
 .top-center {
   margin-top: 40px;
 }
@@ -29,7 +29,7 @@ body {
   color: #FFD700;
 }
 
-/* Button container */
+/* 4️⃣ Button container */
 .button-container {
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@ body {
   padding: 0 20px;
 }
 
-/* Button rows */
+/* Each row of buttons */
 .button-row {
   display: flex;
   justify-content: center;
@@ -47,7 +47,7 @@ body {
   gap: 30px;
 }
 
-/* Square buttons with bobbing animation */
+/* 5️⃣ Square buttons */
 .square-button {
   background-color: #FFD700;
   border: 2px solid black;
@@ -56,12 +56,12 @@ body {
   min-width: 60px;
   min-height: 60px;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 
+  /* Bobbing animation */
   animation: bob 2s infinite ease-in-out;
 }
 
@@ -72,25 +72,32 @@ body {
   object-fit: contain;
   display: block;
   pointer-events: none;
+  transition: transform 0.2s ease;
 }
 
-/* Bobbing animation keyframes */
+/* 6️⃣ Hover effect: scale + blue outline */
+.square-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px #2596be;
+}
+
+/* 7️⃣ Bobbing animation keyframes */
 @keyframes bob {
   0% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
   100% { transform: translateY(0); }
 }
 
-/* Staggered bobbing delays for natural effect */
-.button-row .square-button:nth-child(1) { animation-delay: 0s; }
-.button-row .square-button:nth-child(2) { animation-delay: 0.2s; }
-.button-row .square-button:nth-child(3) { animation-delay: 0.4s; }
-.button-row .square-button:nth-child(4) { animation-delay: 0.6s; }
-.button-row .square-button:nth-child(5) { animation-delay: 0.8s; }
-.button-row .square-button:nth-child(6) { animation-delay: 1s; }
-.button-row .square-button:nth-child(7) { animation-delay: 1.2s; }
+/* 8️⃣ Staggered delays for first row */
+.button-row:nth-child(1) .square-button:nth-child(1) { animation-delay: 0s; }
+.button-row:nth-child(1) .square-button:nth-child(2) { animation-delay: 0.2s; }
+.button-row:nth-child(1) .square-button:nth-child(3) { animation-delay: 0.4s; }
+.button-row:nth-child(1) .square-button:nth-child(4) { animation-delay: 0.6s; }
+.button-row:nth-child(1) .square-button:nth-child(5) { animation-delay: 0.8s; }
+.button-row:nth-child(1) .square-button:nth-child(6) { animation-delay: 1s; }
+.button-row:nth-child(1) .square-button:nth-child(7) { animation-delay: 1.2s; }
 
-/* Second row stagger */
+/* 9️⃣ Staggered delays for second row */
 .button-row:nth-child(2) .square-button:nth-child(1) { animation-delay: 1.4s; }
 .button-row:nth-child(2) .square-button:nth-child(2) { animation-delay: 1.6s; }
 .button-row:nth-child(2) .square-button:nth-child(3) { animation-delay: 1.8s; }
@@ -99,7 +106,7 @@ body {
 .button-row:nth-child(2) .square-button:nth-child(6) { animation-delay: 2.4s; }
 .button-row:nth-child(2) .square-button:nth-child(7) { animation-delay: 2.6s; }
 
-/* Bouncing yellow line at bottom */
+/* 10️⃣ Bouncing yellow line at bottom */
 .bouncing-line {
   position: fixed;
   bottom: 0;
@@ -117,7 +124,7 @@ body {
   100% { transform: translateY(0); }
 }
 
-/* Responsive */
+/* 11️⃣ Responsive */
 @media (max-width: 1024px) {
   .top-center h1 { font-size: clamp(24px, 8vw, 60px); }
 }
