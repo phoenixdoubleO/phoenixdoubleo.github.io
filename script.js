@@ -1,12 +1,11 @@
 const loader = document.getElementById('loader');
 const mainContent = document.getElementById('main-content');
 const fill = document.querySelector('.loading-fill');
-const splat = document.getElementById('splat');
 
 let progress = 0;
 
 function randomIncrement() {
-  return Math.random() * 15; // random speed per step
+  return Math.random() * 15; // random step between 0 and 15%
 }
 
 const loadingInterval = setInterval(() => {
@@ -25,9 +24,6 @@ const loadingInterval = setInterval(() => {
     setTimeout(() => {
       loader.style.display = 'none';
       mainContent.style.display = 'block';
-
-      // fade in splat
-      splat.style.opacity = '1';
     }, 500);
   }
-}, 200);
+}, 200); // update every 0.2s
