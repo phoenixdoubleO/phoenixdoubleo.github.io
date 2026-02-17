@@ -8,41 +8,28 @@ const imageElement = document.getElementById('carouselImage');
 const titleElement = document.getElementById('weaponTitle');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-
-function updateCarousel() {
-  const current = images[currentIndex];
-  imageElement.src = current.src;
-  titleElement.textContent = current.name;
-
-  prevBtn.classList.toggle('disabled', currentIndex === 0);
-  nextBtn.classList.toggle('disabled', currentIndex === images.length - 1);
-}
-
-prevBtn.addEventListener('click', () => {
-  if (currentIndex > 0) currentIndex--;
-  updateCarousel();
-});
-
-nextBtn.addEventListener('click', () => {
-  if (currentIndex < images.length - 1) currentIndex++;
-  updateCarousel();
-});
-
-updateCarousel();
-
 const checkButton = document.getElementById('checkButton');
+
+const checkImage = 'checkmark.png'; // Put this in the main repo
+const emptyImage = ''; // no image for unchecked
 
 // Function to generate unique key per weapon
 function getWeaponKey() {
   return `checked-${images[currentIndex].name}`;
 }
 
-// Update button appearance based on localStorage
+// Update check button appearance
 function updateCheckButton() {
-  if (localStorage.getItem(getWeaponKey()) === 'true') {
-    checkButton.classList.add('checked'); // show yellow checkmark
+  const key = getWeaponKey();
+  const isChecked = localStorage.getItem(key) === 'true';
+
+  if (isChecked) {
+    checkButton.style.backgroundImage = `url('${checkImage}')`;
+    checkButton.classList.add('pop'); // trigger pop animation
+    // remove pop class after animation ends so it can pop again
+    setTimeout(() => checkButton.classList.remove('pop'), 300);
   } else {
-    checkButton.classList.remove('checked'); // hide checkmark
+    checkButton.style.backgroundImage = emptyImage;
   }
 }
 
@@ -60,7 +47,7 @@ checkButton.addEventListener('click', () => {
   updateCheckButton();
 });
 
-// Make sure checkmark updates whenever the carousel changes
+// Update carousel and check button
 function updateCarousel() {
   const current = images[currentIndex];
   imageElement.src = current.src;
@@ -69,5 +56,23 @@ function updateCarousel() {
   prevBtn.classList.toggle('disabled', currentIndex === 0);
   nextBtn.classList.toggle('disabled', currentIndex === images.length - 1);
 
-  updateCheckButton(); // update for current weapon
+  updateCheckButton();
 }
+
+// Arrow button click events
+prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateCarousel();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < images.length - 1) {
+    currentIndex++;
+    updateCarousel();
+  }
+});
+
+// Initialize
+updateCarousel();
