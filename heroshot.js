@@ -20,7 +20,7 @@ function getWeaponKey() {
   return `checked-${weapons[currentIndex].name}`;
 }
 
-// Update check button based on storage
+// Update check button based on localStorage
 function updateCheckButton() {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
@@ -40,14 +40,22 @@ checkButton.addEventListener('click', () => {
   updateCheckButton();
 });
 
-// Update carousel image and title
-function updateCarousel() {
-  const weapon = weapons[currentIndex];
-  imageElement.src = weapon.src;
-  titleElement.textContent = weapon.name;
+// Function to smoothly change carousel images
+function setImage(index) {
+  const newSrc = weapons[index].src;
 
-  prevBtn.classList.toggle('disabled', currentIndex === 0);
-  nextBtn.classList.toggle('disabled', currentIndex === weapons.length - 1);
+  // Fade out
+  imageElement.style.opacity = 0;
+  setTimeout(() => {
+    imageElement.src = newSrc;
+    titleElement.textContent = weapons[index].name;
+
+    // Fade in
+    imageElement.style.opacity = 1;
+  }, 200);
+
+  prevBtn.classList.toggle('disabled', index === 0);
+  nextBtn.classList.toggle('disabled', index === weapons.length - 1);
 
   updateCheckButton();
 }
@@ -56,21 +64,28 @@ function updateCarousel() {
 prevBtn.addEventListener('click', () => {
   if (currentIndex > 0) {
     currentIndex--;
-    updateCarousel();
+    setImage(currentIndex);
   }
 });
 
 nextBtn.addEventListener('click', () => {
   if (currentIndex < weapons.length - 1) {
     currentIndex++;
-    updateCarousel();
+    setImage(currentIndex);
   }
 });
 
-// Back button functionality
-backButton.addEventListener('click', () => {
-  window.history.back(); // or use: location.href = 'shooters.html';
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
 });
 
-// Initialize
-updateCarousel();
+// Back button
+backButton.addEventListener('click', () => {
+  window.history.back(); // or location.href = 'shooters.html';
+});
+
+// Initialize carousel
+imageElement.style.transition = 'opacity 0.3s ease'; // fade effect
+setImage(currentIndex);
