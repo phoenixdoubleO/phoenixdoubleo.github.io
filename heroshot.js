@@ -1,5 +1,10 @@
+const images = [
+  { src: 'image1.png', name: 'Hero Shot Replica' }
+];
+
 let currentIndex = 0;
 
+// Elements
 const imageElement = document.getElementById('carouselImage');
 const titleElement = document.getElementById('weaponTitle');
 const prevBtn = document.getElementById('prevBtn');
@@ -7,25 +12,22 @@ const nextBtn = document.getElementById('nextBtn');
 const checkButton = document.getElementById('checkButton');
 const backButton = document.getElementById('backButton');
 
-const checkImage = 'checkmark.png';
-const emptyImage = '';
+// Checkmark image
+const checkmarkImage = 'checkmark.png';
 
-// Unique key per weapon
+// Helper: unique key per weapon for localStorage
 function getWeaponKey() {
-  return `checked-${images[currentIndex].name}`;
+  return `checked-${weapons[currentIndex].name}`;
 }
 
-// Update check button
+// Update the check button based on localStorage
 function updateCheckButton() {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
-
   if (isChecked) {
-    checkButton.style.backgroundImage = `url('${checkImage}')`;
-    checkButton.classList.add('pop');
-    setTimeout(() => checkButton.classList.remove('pop'), 300);
+    checkButton.style.backgroundImage = `url('${checkmarkImage}')`;
   } else {
-    checkButton.style.backgroundImage = emptyImage;
+    checkButton.style.backgroundImage = '';
   }
 }
 
@@ -34,30 +36,36 @@ checkButton.addEventListener('click', () => {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
   localStorage.setItem(key, !isChecked ? 'true' : 'false');
+
+  // Pop animation
+  checkButton.classList.add('pop');
+  setTimeout(() => checkButton.classList.remove('pop'), 300);
+
   updateCheckButton();
 });
 
-// Update carousel
+// Update carousel image and title
 function updateCarousel() {
-  const current = images[currentIndex];
-  imageElement.src = current.src;
-  titleElement.textContent = current.name;
+  const weapon = weapons[currentIndex];
+  imageElement.src = weapon.src;
+  titleElement.textContent = weapon.name;
 
   prevBtn.classList.toggle('disabled', currentIndex === 0);
-  nextBtn.classList.toggle('disabled', currentIndex === images.length - 1);
+  nextBtn.classList.toggle('disabled', currentIndex === weapons.length - 1);
 
   updateCheckButton();
 }
 
-// Arrow buttons
+// Arrow navigation
 prevBtn.addEventListener('click', () => {
   if (currentIndex > 0) {
     currentIndex--;
     updateCarousel();
   }
 });
+
 nextBtn.addEventListener('click', () => {
-  if (currentIndex < images.length - 1) {
+  if (currentIndex < weapons.length - 1) {
     currentIndex++;
     updateCarousel();
   }
@@ -65,8 +73,8 @@ nextBtn.addEventListener('click', () => {
 
 // Back button
 backButton.addEventListener('click', () => {
-  location.href = 'shooters.html'; // or window.history.back();
+  location.href = 'shooters.html'; // change to your main page
 });
 
-// Initialize
+// Initialize page
 updateCarousel();
