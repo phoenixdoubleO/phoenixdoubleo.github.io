@@ -6,27 +6,29 @@
   font-style: normal;
 }
 
-/* 2️⃣ Then your regular CSS */
-html, body {
+/* 2️⃣ Body styles */
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center;  /* horizontal centering */
-  align-items: center;      /* vertical centering */
-  text-align: center;       /* center text inside div */
+  font-family: 'MyFont', Arial, sans-serif;
   background-color: #d3d3d3; /* grey background */
-  font-family: 'MyFont', Arial, sans-serif; /* use your font here */
-  color: #FFD700;           /* yellow text */
+  color: #FFD700;             /* yellow text */
+  text-align: center;          /* horizontal centering */
 }
 
+/* 3️⃣ Top-centered content */
+.top-center {
+  padding-top: 50px;  /* distance from top of screen */
+}
+
+/* 4️⃣ Title styling */
 h1 {
   font-size: 4em;
   margin: 0;
 }
 
+/* 5️⃣ Subtitle styling */
 p {
   font-size: 1.5em;
   margin-top: 10px;
-  color: #FFD700;
 }
