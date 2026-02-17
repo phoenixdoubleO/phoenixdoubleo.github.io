@@ -32,23 +32,21 @@ updateCarousel();
 
 const checkButton = document.getElementById('checkButton');
 
-// Function to generate a unique key for each weapon
+// Function to generate unique key per weapon
 function getWeaponKey() {
   return `checked-${images[currentIndex].name}`;
 }
 
-// Initialize button state on load
+// Update button appearance based on localStorage
 function updateCheckButton() {
   if (localStorage.getItem(getWeaponKey()) === 'true') {
-    checkButton.textContent = 'Checked ✅';
-    checkButton.style.backgroundColor = '#8BC34A'; // green
+    checkButton.classList.add('checked'); // show yellow checkmark
   } else {
-    checkButton.textContent = 'Mark as Checked ✅';
-    checkButton.style.backgroundColor = '#FFD700'; // yellow
+    checkButton.classList.remove('checked'); // hide checkmark
   }
 }
 
-// Handle button click
+// Toggle checkmark on click
 checkButton.addEventListener('click', () => {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
@@ -62,7 +60,7 @@ checkButton.addEventListener('click', () => {
   updateCheckButton();
 });
 
-// Update button every time the carousel changes
+// Make sure checkmark updates whenever the carousel changes
 function updateCarousel() {
   const current = images[currentIndex];
   imageElement.src = current.src;
@@ -71,6 +69,5 @@ function updateCarousel() {
   prevBtn.classList.toggle('disabled', currentIndex === 0);
   nextBtn.classList.toggle('disabled', currentIndex === images.length - 1);
 
-  // Update check button for current weapon
-  updateCheckButton();
+  updateCheckButton(); // update for current weapon
 }
