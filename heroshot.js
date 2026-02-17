@@ -1,9 +1,11 @@
-const images = [
+// Weapons list
+const weapons = [
   { src: 'image1.png', name: 'Hero Shot Replica' }
 ];
 
 let currentIndex = 0;
 
+// Elements
 const imageElement = document.getElementById('carouselImage');
 const titleElement = document.getElementById('weaponTitle');
 const prevBtn = document.getElementById('prevBtn');
@@ -11,59 +13,46 @@ const nextBtn = document.getElementById('nextBtn');
 const checkButton = document.getElementById('checkButton');
 const backButton = document.getElementById('backButton');
 
-const checkImage = 'checkmark.png';
-const emptyImage = '';
+const checkmarkImage = 'checkmark.png';
 
-// ==========================
-// Unique key per weapon
-// ==========================
+// Unique key per weapon for storage
 function getWeaponKey() {
-  return `checked-${images[currentIndex].name}`;
+  return `checked-${weapons[currentIndex].name}`;
 }
 
-// ==========================
-// Update check button
-// ==========================
+// Update check button based on storage
 function updateCheckButton() {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
-
-  if (isChecked) {
-    checkButton.style.backgroundImage = `url('${checkImage}')`;
-    checkButton.classList.add('pop');
-    setTimeout(() => checkButton.classList.remove('pop'), 300);
-  } else {
-    checkButton.style.backgroundImage = emptyImage;
-  }
+  checkButton.style.backgroundImage = isChecked ? `url('${checkmarkImage}')` : '';
 }
 
-// ==========================
 // Toggle checkmark
-// ==========================
 checkButton.addEventListener('click', () => {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
   localStorage.setItem(key, !isChecked ? 'true' : 'false');
+
+  // Pop animation
+  checkButton.classList.add('pop');
+  setTimeout(() => checkButton.classList.remove('pop'), 300);
+
   updateCheckButton();
 });
 
-// ==========================
-// Update carousel
-// ==========================
+// Update carousel image and title
 function updateCarousel() {
-  const current = images[currentIndex];
-  imageElement.src = current.src;
-  titleElement.textContent = current.name;
+  const weapon = weapons[currentIndex];
+  imageElement.src = weapon.src;
+  titleElement.textContent = weapon.name;
 
   prevBtn.classList.toggle('disabled', currentIndex === 0);
-  nextBtn.classList.toggle('disabled', currentIndex === images.length - 1);
+  nextBtn.classList.toggle('disabled', currentIndex === weapons.length - 1);
 
   updateCheckButton();
 }
 
-// ==========================
-// Arrow click events
-// ==========================
+// Arrow navigation
 prevBtn.addEventListener('click', () => {
   if (currentIndex > 0) {
     currentIndex--;
@@ -72,21 +61,16 @@ prevBtn.addEventListener('click', () => {
 });
 
 nextBtn.addEventListener('click', () => {
-  if (currentIndex < images.length - 1) {
+  if (currentIndex < weapons.length - 1) {
     currentIndex++;
     updateCarousel();
   }
 });
 
-// ==========================
-// Back button event
-// ==========================
+// Back button functionality
 backButton.addEventListener('click', () => {
-  // Change this to your menu page
-  location.href = 'shooters.html';
+  window.history.back(); // or use: location.href = 'shooters.html';
 });
 
-// ==========================
 // Initialize
-// ==========================
 updateCarousel();
