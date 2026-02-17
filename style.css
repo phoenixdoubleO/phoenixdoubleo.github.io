@@ -1,34 +1,36 @@
-/* 1️⃣ Add your font first */
+/* 1️⃣ Import your downloaded Splatoon1 font at the top */
 @font-face {
-  font-family: 'MyFont';       /* Name you’ll use in CSS */
-  src: url('Splatoon1.otf') format('opentype');
+  font-family: 'Splatoon1';
+  src: url('Splatoon1.otf') format('opentype'); /* make sure this file is in the same folder */
   font-weight: normal;
   font-style: normal;
 }
 
-/* 2️⃣ Body styles */
+/* 2️⃣ Body styling */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'MyFont', Arial, sans-serif;
-  background-color: #2a2f35; /* grey background */
+  font-family: 'Splatoon1', Arial, sans-serif; /* use your font */
+  background-color: #2a2f35; /* dark grey/blue background */
   color: #FFD700;             /* yellow text */
-  text-align: center;          /* horizontal centering */
+  text-align: center;         /* horizontal centering */
 }
 
-/* 3️⃣ Top-centered content */
+/* 3️⃣ Top-centered container */
 .top-center {
-  padding-top: 50px;  /* distance from top of screen */
+  padding-top: 50px;  /* distance from top of the screen */
 }
 
+/* 4️⃣ Title styling */
 h1 {
-  font-size: clamp(2em, 8vw, 4em);
+  font-size: clamp(2em, 8vw, 4em); /* automatically scales */
   margin: 0;
+  line-height: 1.2;
 }
-
 
 /* 5️⃣ Subtitle styling */
 p {
   font-size: 1.5em;
   margin-top: 10px;
+  color: #FFD700; /* yellow text */
 }
