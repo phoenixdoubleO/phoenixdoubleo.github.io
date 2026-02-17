@@ -19,45 +19,28 @@ body {
   background-color: #2e2e2e;
   color: white;
   padding-top: 20px;
-  transition: transform 0.3s ease; /* smooth animation */
-  transform: translateX(0); /* start visible */
+  transition: transform 0.3s ease; /* smooth slide */
+  transform: translateX(-100%); /* starts hidden */
+  z-index: 999;
 }
 
-.sidebar.closed {
-  transform: translateX(-100%); /* hidden */
+/* Sidebar visible */
+.sidebar.open {
+  transform: translateX(0);
 }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.sidebar a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 12px 20px;
-}
-
-.sidebar a:hover {
-  background-color: #444;
-}
-
-/* Main content */
-.content {
-  margin-left: 220px;
-  padding: 20px;
-}
-
-/* Toggle button */
+/* Toggle button inside sidebar */
 .menu-toggle {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  border: none;           /* removes border */
-  background: transparent; /* removes the grey/colored box */
-  padding: 0;             /* removes extra space around the image */
+  border: none;
+  background: transparent;
+  padding: 6px;
   cursor: pointer;
-  z-index: 1000;
+  display: block;
+  margin: 0 auto 20px auto; /* center button at top */
 }
 
+.menu-toggle img {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
