@@ -170,3 +170,38 @@ body {
     height: clamp(50px, 15vw, 90px);
   }
 }
+
+/* ===== HERO SHOT CAROUSEL ===== */
+
+.carousel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.carousel img {
+  width: 300px;
+  height: auto;
+  user-select: none;
+}
+
+.arrow {
+  font-family: 'Splatoon1', Arial, sans-serif;
+  font-size: 40px;
+  background: none;
+  border: none;
+  color: yellow;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.arrow.disabled {
+  color: #b59b00;
+  cursor: default;
+}
+
