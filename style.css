@@ -10,6 +10,7 @@ body {
 }
 
 /* Sidebar */
+/* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
@@ -19,24 +20,25 @@ body {
   background-color: #2e2e2e;
   color: white;
   padding-top: 20px;
-  transition: transform 0.3s ease; /* smooth slide */
+  transition: transform 0.3s ease;
   transform: translateX(-100%); /* starts hidden */
   z-index: 999;
 }
 
-/* Sidebar visible */
 .sidebar.open {
-  transform: translateX(0);
+  transform: translateX(0); /* slides in */
 }
 
-/* Toggle button inside sidebar */
+/* Menu button outside sidebar */
 .menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
   border: none;
   background: transparent;
   padding: 6px;
   cursor: pointer;
-  display: block;
-  margin: 0 auto 20px auto; /* center button at top */
+  z-index: 1000; /* above sidebar */
 }
 
 .menu-toggle img {
