@@ -1,11 +1,20 @@
 const loader = document.getElementById('loader');
 const mainContent = document.getElementById('main-content');
 const fill = document.querySelector('.loading-fill');
+const loadingText = document.getElementById('loading-text');
 
 let progress = 0;
 
+// Animate dots
+let dotCount = 0;
+const dotInterval = setInterval(() => {
+  dotCount = (dotCount % 3) + 1; // cycles 1 → 2 → 3
+  loadingText.textContent = 'Loading' + '.'.repeat(dotCount);
+}, 500); // every 0.5s
+
+// Fill loading bar randomly
 function randomIncrement() {
-  return Math.random() * 15; // random step between 0 and 15%
+  return Math.random() * 15;
 }
 
 const loadingInterval = setInterval(() => {
@@ -16,6 +25,7 @@ const loadingInterval = setInterval(() => {
 
   if (progress >= 100) {
     clearInterval(loadingInterval);
+    clearInterval(dotInterval); // stop the dots animation
 
     // fade out loader
     loader.style.transition = 'opacity 0.5s ease';
@@ -26,4 +36,4 @@ const loadingInterval = setInterval(() => {
       mainContent.style.display = 'block';
     }, 500);
   }
-}, 200); // update every 0.2s
+}, 200);
