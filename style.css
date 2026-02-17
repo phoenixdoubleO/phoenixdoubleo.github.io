@@ -1,17 +1,25 @@
-/* Reset default margins/padding and full height */
+/* 1️⃣ Add your font first */
+@font-face {
+  font-family: 'MyFont';       /* Name you’ll use in CSS */
+  src: url('Splatoon1.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 2️⃣ Then your regular CSS */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Arial, sans-serif;
-  background-color: #d3d3d3; /* grey background */
   display: flex;
-  justify-content: center; /* horizontal centering */
-  align-items: center;     /* vertical centering */
-  text-align: center;      /* center text inside the div */
+  justify-content: center;  /* horizontal centering */
+  align-items: center;      /* vertical centering */
+  text-align: center;       /* center text inside div */
+  background-color: #d3d3d3; /* grey background */
+  font-family: 'MyFont', Arial, sans-serif; /* use your font here */
+  color: #FFD700;           /* yellow text */
 }
 
-/* Optional: style for title and subtitle */
 h1 {
   font-size: 4em;
   margin: 0;
@@ -20,5 +28,5 @@ h1 {
 p {
   font-size: 1.5em;
   margin-top: 10px;
-  color: #333; /* darker text for contrast */
+  color: #FFD700;
 }
