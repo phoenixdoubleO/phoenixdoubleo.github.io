@@ -4,10 +4,14 @@ const fill = document.querySelector('.loading-fill');
 
 let progress = 0;
 
-// Simulate loading progress
+function randomIncrement() {
+  return Math.random() * 15; // random step between 0 and 15%
+}
+
 const loadingInterval = setInterval(() => {
-  progress += Math.random() * 10; // increase randomly for effect
+  progress += randomIncrement();
   if (progress > 100) progress = 100;
+
   fill.style.width = progress + '%';
 
   if (progress >= 100) {
