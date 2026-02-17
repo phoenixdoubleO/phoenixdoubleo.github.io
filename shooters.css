@@ -17,7 +17,28 @@ body {
   overflow-x: hidden;
 }
 
-/* 3️⃣ Top title */
+/* 3️⃣ Back button */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #FFD700;
+  color: black;
+  border: 2px solid black;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1000;
+}
+
+.back-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px #2596be;
+}
+
+/* 4️⃣ Top title */
 .top-center {
   margin-top: 40px;
 }
@@ -29,7 +50,7 @@ body {
   color: #FFD700;
 }
 
-/* 4️⃣ Button container */
+/* 5️⃣ Button container */
 .button-container {
   display: flex;
   flex-direction: column;
@@ -39,7 +60,7 @@ body {
   padding: 0 20px;
 }
 
-/* Each row of buttons */
+/* Button rows */
 .button-row {
   display: flex;
   justify-content: center;
@@ -47,7 +68,7 @@ body {
   gap: 30px;
 }
 
-/* 5️⃣ Square buttons */
+/* 6️⃣ Square buttons */
 .square-button {
   background-color: #FFD700;
   border: 2px solid black;
@@ -75,20 +96,20 @@ body {
   transition: transform 0.2s ease;
 }
 
-/* 6️⃣ Hover effect: scale + blue outline */
+/* 7️⃣ Hover effect: scale + blue outline */
 .square-button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 0 6px #2596be;
 }
 
-/* 7️⃣ Bobbing animation keyframes */
+/* 8️⃣ Bobbing animation keyframes */
 @keyframes bob {
   0% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
   100% { transform: translateY(0); }
 }
 
-/* 8️⃣ Staggered delays for first row */
+/* 9️⃣ Staggered delays first row */
 .button-row:nth-child(1) .square-button:nth-child(1) { animation-delay: 0s; }
 .button-row:nth-child(1) .square-button:nth-child(2) { animation-delay: 0.2s; }
 .button-row:nth-child(1) .square-button:nth-child(3) { animation-delay: 0.4s; }
@@ -97,7 +118,7 @@ body {
 .button-row:nth-child(1) .square-button:nth-child(6) { animation-delay: 1s; }
 .button-row:nth-child(1) .square-button:nth-child(7) { animation-delay: 1.2s; }
 
-/* 9️⃣ Staggered delays for second row */
+/* 10️⃣ Staggered delays second row */
 .button-row:nth-child(2) .square-button:nth-child(1) { animation-delay: 1.4s; }
 .button-row:nth-child(2) .square-button:nth-child(2) { animation-delay: 1.6s; }
 .button-row:nth-child(2) .square-button:nth-child(3) { animation-delay: 1.8s; }
@@ -106,7 +127,7 @@ body {
 .button-row:nth-child(2) .square-button:nth-child(6) { animation-delay: 2.4s; }
 .button-row:nth-child(2) .square-button:nth-child(7) { animation-delay: 2.6s; }
 
-/* 10️⃣ Bouncing yellow line at bottom */
+/* 11️⃣ Bouncing yellow line at bottom */
 .bouncing-line {
   position: fixed;
   bottom: 0;
@@ -124,7 +145,7 @@ body {
   100% { transform: translateY(0); }
 }
 
-/* 11️⃣ Responsive */
+/* 12️⃣ Responsive */
 @media (max-width: 1024px) {
   .top-center h1 { font-size: clamp(24px, 8vw, 60px); }
 }
