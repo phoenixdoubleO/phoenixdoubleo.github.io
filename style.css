@@ -1,7 +1,7 @@
 /* 1️⃣ Import your downloaded Splatoon1 font at the top */
 @font-face {
   font-family: 'Splatoon1';
-  src: url('Splatoon1.of') format('opentype'); /* make sure this file is in the same folder */
+  src: url('Splatoon1.otf') format('opentype'); /* make sure this file is in the same folder */
   font-weight: normal;
   font-style: normal;
 }
