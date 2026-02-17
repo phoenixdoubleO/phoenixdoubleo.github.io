@@ -3,86 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <title>Phoix</title>
-
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
 </head>
 <body>
 
-  <!-- 1️⃣ Loader Screen -->
-  <div id="loader">
-    <div class="loading-text">Loading<span id="dots">...</span></div>
+  <!-- Loading screen -->
+  <div class="loading-screen">
+    <div class="loading-text">Loading<span class="dots"></span></div>
     <div class="loading-bar">
-      <div class="loading-fill"></div>
+      <div class="loading-bar-fill"></div>
     </div>
   </div>
 
-  <!-- 2️⃣ Main Content -->
-  <div id="main-content">
-    <div class="top-center">
-      <h1>S3 Weapon Checklist</h1>
-      <p>Thanks for coming!</p>
+  <!-- Title -->
+  <div class="top-center">
+    <h1>S3 Weapon Checklist</h1>
+    <p>Thanks for coming!</p>
+  </div>
+
+  <!-- 11 icon buttons -->
+  <div class="button-container">
+    <div class="button-row">
+      <button class="icon-button" onclick="location.href='shooters.html'">
+        <img src="S3Icons/image1.png" alt="Image 1">
+      </button>
+      <button class="icon-button"><img src="S3Icons/image2.png" alt="Image 2"></button>
+      <button class="icon-button"><img src="S3Icons/image3.png" alt="Image 3"></button>
+      <button class="icon-button"><img src="S3Icons/image4.png" alt="Image 4"></button>
+      <button class="icon-button"><img src="S3Icons/image5.png" alt="Image 5"></button>
+      <button class="icon-button"><img src="S3Icons/image6.png" alt="Image 6"></button>
     </div>
-
-    <!-- Buttons -->
-   <div class="button-container">
-  <div class="button-row">
-    <!-- THIS BUTTON now goes to Shooters page -->
-    <button class="icon-button" onclick="location.href='shooters.html'">
-      <img src="S3Icons/image1.png" alt="Image 1">
-    </button>
-
-    <button class="icon-button"><img src="S3Icons/image2.png" alt="Image 2"></button>
-    <button class="icon-button"><img src="S3Icons/image3.png" alt="Image 3"></button>
-    <button class="icon-button"><img src="S3Icons/image4.png" alt="Image 4"></button>
-    <button class="icon-button"><img src="S3Icons/image5.png" alt="Image 5"></button>
-    <button class="icon-button"><img src="S3Icons/image6.png" alt="Image 6"></button>
+    <div class="button-row">
+      <button class="icon-button"><img src="S3Icons/image7.png" alt="Image 7"></button>
+      <button class="icon-button"><img src="S3Icons/image8.png" alt="Image 8"></button>
+      <button class="icon-button"><img src="S3Icons/image9.png" alt="Image 9"></button>
+      <button class="icon-button"><img src="S3Icons/image10.png" alt="Image 10"></button>
+      <button class="icon-button"><img src="S3Icons/image11.png" alt="Image 11"></button>
+    </div>
   </div>
-  <div class="button-row">
-    <button class="icon-button"><img src="S3Icons/image7.png" alt="Image 7"></button>
-    <button class="icon-button"><img src="S3Icons/image8.png" alt="Image 8"></button>
-    <button class="icon-button"><img src="S3Icons/image9.png" alt="Image 9"></button>
-    <button class="icon-button"><img src="S3Icons/image10.png" alt="Image 10"></button>
-    <button class="icon-button"><img src="S3Icons/image11.png" alt="Image 11"></button>
-  </div>
-</div>
 
-
-  <!-- 3️⃣ Bouncing Line -->
+  <!-- Bouncing yellow line -->
   <div class="bouncing-line"></div>
 
-  <!-- 4️⃣ Scripts -->
+  <!-- JS for loading screen -->
   <script>
-    // Loading animation with random fill and animated dots
-    const loader = document.getElementById('loader');
-    const mainContent = document.getElementById('main-content');
-    const fill = document.querySelector('.loading-fill');
-    const dots = document.getElementById('dots');
+    const loadingScreen = document.querySelector('.loading-screen');
+    const loadingBar = document.querySelector('.loading-bar-fill');
+    const dots = document.querySelector('.dots');
 
+    // Animate dots (1-3)
     let dotCount = 0;
-    const dotInterval = setInterval(() => {
+    setInterval(() => {
       dotCount = (dotCount + 1) % 4;
       dots.textContent = '.'.repeat(dotCount);
     }, 500);
 
-    let progress = 0;
-    const randomIncrement = () => Math.random() * 5 + 1; // 1–6% per interval
-    const loadInterval = setInterval(() => {
-      progress += randomIncrement();
-      if (progress >= 100) progress = 100;
-      fill.style.width = progress + '%';
+    // Check if first visit
+    let isFirstLoad = !sessionStorage.getItem('visited');
+    if (isFirstLoad) sessionStorage.setItem('visited', 'true');
 
-      if (progress >= 100) {
-        clearInterval(loadInterval);
-        clearInterval(dotInterval);
-        loader.style.display = 'none';
-        mainContent.style.display = 'block';
-      }
-    }, 100);
+    let progress = 0;
+    let interval, stepTime;
+
+    if (isFirstLoad) {
+      // Full load: ~3s
+      stepTime = 30; // 30ms per step
+      interval = setInterval(() => {
+        progress += 1;
+        loadingBar.style.width = progress + '%';
+        if (progress >= 100) {
+          clearInterval(interval);
+          loadingScreen.style.display = 'none';
+        }
+      }, stepTime);
+    } else {
+      // Short load: ~0.5s
+      stepTime = 10;
+      interval = setInterval(() => {
+        progress += 5;
+        loadingBar.style.width = progress + '%';
+        if (progress >= 100) {
+          clearInterval(interval);
+          loadingScreen.style.display = 'none';
+        }
+      }, stepTime);
+    }
   </script>
 
 </body>
