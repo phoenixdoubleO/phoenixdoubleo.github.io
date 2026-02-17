@@ -5,12 +5,12 @@ const loadingText = document.getElementById('loading-text');
 
 let progress = 0;
 
-// Animate dots
+// Animate dots in "Loading"
 let dotCount = 0;
 const dotInterval = setInterval(() => {
   dotCount = (dotCount % 3) + 1; // cycles 1 → 2 → 3
   loadingText.textContent = 'Loading' + '.'.repeat(dotCount);
-}, 500); // every 0.5s
+}, 500);
 
 // Fill loading bar randomly
 function randomIncrement() {
@@ -25,7 +25,7 @@ const loadingInterval = setInterval(() => {
 
   if (progress >= 100) {
     clearInterval(loadingInterval);
-    clearInterval(dotInterval); // stop dots
+    clearInterval(dotInterval);
 
     // fade out loader
     loader.style.transition = 'opacity 0.5s ease';
