@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-/* 2️⃣ Body */
+/* Body styling */
 body {
   margin: 0;
   padding: 0;
@@ -17,7 +17,7 @@ body {
   overflow: hidden; /* prevent scroll during loading */
 }
 
-/* 3️⃣ Loader screen */
+/* Loader screen */
 #loader {
   position: fixed;
   top: 0;
@@ -40,26 +40,24 @@ body {
   white-space: nowrap;
 }
 
-/* Loading bar container */
+/* Loading bar */
 .loading-bar {
   width: 60%;
   height: 25px;
-  border: 3px solid black; /* black outline */
-  background-color: transparent;
+  border: 3px solid black;
   border-radius: 5px;
   overflow: hidden;
 }
 
-/* Loading bar fill */
 .loading-fill {
   height: 100%;
   width: 0%;
-  background-color: #FFD700; /* yellow fill */
+  background-color: #FFD700;
   transition: width 0.2s ease;
   border-radius: 3px 0 0 3px;
 }
 
-/* 4️⃣ Main content initially hidden */
+/* Main content initially hidden */
 #main-content {
   display: none;
   padding-top: 20px;
@@ -76,4 +74,41 @@ body {
   font-size: 2vw;
   margin-top: 10px;
   color: #FFD700;
+}
+
+/* Buttons container */
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 10px;
+}
+
+/* Individual buttons */
+.icon-button {
+  background-color: #FFD700;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  aspect-ratio: 1 / 1; /* make square buttons */
+}
+
+/* Hover effect */
+.icon-button:hover {
+  transform: scale(1.1);
+  background-color: #ffea00;
+}
+
+/* Images inside buttons */
+.icon-button img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
 }
