@@ -1,4 +1,4 @@
-/* 1️⃣ Font import */
+/* Font import */
 @font-face {
   font-family: 'Splatoon1';
   src: url('Splatoon1.otf') format('opentype');
@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-/* 2️⃣ Body */
+/* Body */
 body {
   margin: 0;
   padding: 0;
@@ -17,8 +17,90 @@ body {
   overflow-x: hidden;
 }
 
-/* 3️⃣ Loader screen */
-#loader {
+/* Top title */
+.top-center {
+  margin-top: 40px;
+}
+
+.top-center h1 {
+  font-size: clamp(24px, 6vw, 60px);
+  margin: 0;
+  user-select: none;
+}
+
+.top-center p {
+  margin: 5px 0 0 0;
+  user-select: none;
+}
+
+/* Icon buttons */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 80px auto 50px auto;
+  padding: 0 20px;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.icon-button {
+  background-color: #FFD700;
+  border: 2px solid black;
+  width: clamp(80px, 10vw, 120px);
+  height: clamp(80px, 10vw, 120px);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: bob 2s infinite ease-in-out;
+}
+
+.icon-button img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
+}
+
+/* Hover effect: scale + blue outline */
+.icon-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px #2596be;
+}
+
+/* Bobbing animation */
+@keyframes bob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+/* Staggered animation delays first row */
+.button-row:nth-child(1) .icon-button:nth-child(1) { animation-delay: 0s; }
+.button-row:nth-child(1) .icon-button:nth-child(2) { animation-delay: 0.2s; }
+.button-row:nth-child(1) .icon-button:nth-child(3) { animation-delay: 0.4s; }
+.button-row:nth-child(1) .icon-button:nth-child(4) { animation-delay: 0.6s; }
+.button-row:nth-child(1) .icon-button:nth-child(5) { animation-delay: 0.8s; }
+.button-row:nth-child(1) .icon-button:nth-child(6) { animation-delay: 1s; }
+
+/* Second row */
+.button-row:nth-child(2) .icon-button:nth-child(1) { animation-delay: 1.2s; }
+.button-row:nth-child(2) .icon-button:nth-child(2) { animation-delay: 1.4s; }
+.button-row:nth-child(2) .icon-button:nth-child(3) { animation-delay: 1.6s; }
+.button-row:nth-child(2) .icon-button:nth-child(4) { animation-delay: 1.8s; }
+.button-row:nth-child(2) .icon-button:nth-child(5) { animation-delay: 2s; }
+
+/* Loading screen */
+.loading-screen {
   position: fixed;
   top: 0;
   left: 0;
@@ -29,127 +111,35 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 2000;
 }
 
 .loading-text {
-  font-size: 4vw;
   color: #FFD700;
+  font-size: clamp(18px, 4vw, 36px);
   margin-bottom: 20px;
-  white-space: nowrap;
-  user-select: none;
 }
 
 .loading-bar {
-  width: 60%;
-  height: 25px;
-  border: 3px solid black;
-  border-radius: 5px;
-  overflow: hidden;
+  width: 300px;
+  max-width: 80%;
+  height: 10px;
+  border: 2px solid #000;
+  background-color: #444;
 }
 
-.loading-fill {
+.loading-bar-fill {
   height: 100%;
   width: 0%;
   background-color: #FFD700;
-  transition: width 0.2s ease;
-  border-radius: 3px 0 0 3px;
 }
 
-/* 4️⃣ Main content */
-#main-content {
-  display: none;
-  padding-top: 20px;
+/* Dots after Loading */
+.dots::after {
+  content: '';
 }
 
-.top-center h1 {
-  font-size: clamp(24px, 8vw, 80px);
-  margin: 0;
-  line-height: 1.2;
-  white-space: nowrap;
-  user-select: none;
-}
-
-.top-center p {
-  font-size: clamp(14px, 2.5vw, 32px);
-  margin-top: 10px;
-  color: #FFD700;
-  user-select: none;
-}
-
-/* 5️⃣ Buttons container */
-.button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  max-width: 1200px;
-  margin: 100px auto 50px auto;
-  padding: 0 20px;
-}
-
-/* Each row of buttons */
-.button-row {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 30px;
-}
-
-/* 6️⃣ Circular buttons with bobbing and hover ring */
-.icon-button {
-  background-color: #FFD700;
-  border: 2px solid black;
-  border-radius: 50%;
-  width: clamp(80px, 10vw, 140px);
-  height: clamp(80px, 10vw, 140px);
-  min-width: 60px;
-  min-height: 60px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-
-  /* Bobbing animation */
-  animation: bob 2s infinite ease-in-out;
-}
-
-/* Staggered delays for each button for natural effect */
-.button-row .icon-button:nth-child(1) { animation-delay: 0s; }
-.button-row .icon-button:nth-child(2) { animation-delay: 0.2s; }
-.button-row .icon-button:nth-child(3) { animation-delay: 0.4s; }
-.button-row .icon-button:nth-child(4) { animation-delay: 0.6s; }
-.button-row .icon-button:nth-child(5) { animation-delay: 0.8s; }
-.button-row .icon-button:nth-child(6) { animation-delay: 1s; }
-.button-row .icon-button:nth-child(7) { animation-delay: 1.2s; }
-.button-row .icon-button:nth-child(8) { animation-delay: 1.4s; }
-.button-row .icon-button:nth-child(9) { animation-delay: 1.6s; }
-.button-row .icon-button:nth-child(10){ animation-delay: 1.8s; }
-.button-row .icon-button:nth-child(11){ animation-delay: 2s; }
-
-/* Hover effect: scale + blue ring */
-.icon-button:hover {
-  transform: scale(1.2);
-  background-color: #ffea00;
-  box-shadow: 0 0 0 6px #2596be;
-}
-
-.icon-button img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  display: block;
-}
-
-/* Bobbing keyframes */
-@keyframes bob {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
-
-/* 7️⃣ Bouncing yellow line at the bottom */
+/* Bouncing yellow line at bottom */
 .bouncing-line {
   position: fixed;
   bottom: 0;
@@ -162,29 +152,19 @@ body {
 }
 
 @keyframes bounce {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-5px); }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
   100% { transform: translateY(0); }
 }
 
-/* 8️⃣ Responsive adjustments */
-@media (max-width: 1024px) {
-  .top-center h1 { font-size: clamp(24px, 10vw, 80px); }
-  .top-center p  { font-size: clamp(14px, 3vw, 32px); }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  .button-container { gap: 40px; }
   .icon-button {
-    width: clamp(60px, 12vw, 120px);
-    height: clamp(60px, 12vw, 120px);
+    width: clamp(60px, 12vw, 100px);
+    height: clamp(60px, 12vw, 100px);
   }
 }
-
 @media (max-width: 480px) {
-  .top-center h1 { font-size: clamp(20px, 12vw, 60px); }
-  .top-center p  { font-size: clamp(12px, 4vw, 24px); }
-  .button-container { gap: 30px; }
   .icon-button {
     width: clamp(50px, 15vw, 90px);
     height: clamp(50px, 15vw, 90px);
