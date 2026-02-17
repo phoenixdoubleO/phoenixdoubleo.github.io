@@ -1,6 +1,6 @@
 // Weapons list
 const weapons = [
-  { src: 'image1.png', name: 'Hero Shot Replica' }
+  { src: 'image1.png', name: 'Hero Sot Replica' }
 ];
 
 let currentIndex = 0;
