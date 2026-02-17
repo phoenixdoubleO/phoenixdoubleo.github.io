@@ -1,7 +1,4 @@
 [
-  "HSR.png",
-  "image2.png",
-  "image3.png",
-  "image4.png",
-  "image5.png"
+  { "file": "HSR.png", "name": "Hero Shot Replica" }
+  
 ]
