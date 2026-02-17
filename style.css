@@ -14,7 +14,7 @@ body {
   background-color: #2a2f35;
   color: #FFD700;
   text-align: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* Loader screen */
@@ -87,17 +87,20 @@ body {
 /* Each row of buttons */
 .button-row {
   display: flex;
-  justify-content: center;
-  gap: 20px; /* space between buttons */
+  justify-content: center;  /* center row horizontally */
+  flex-wrap: wrap;          /* allow wrapping on smaller screens */
+  gap: 20px;                /* space between buttons */
 }
 
 /* Circular buttons */
 .icon-button {
   background-color: #FFD700;
   border: 2px solid black;
-  border-radius: 50%;
+  border-radius: 50%;       /* circle */
   width: 80px;
   height: 80px;
+  min-width: 60px;           /* minimum size on small screens */
+  min-height: 60px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -115,4 +118,31 @@ body {
   max-width: 70%;
   max-height: 70%;
   object-fit: contain;
+}
+
+/* Responsive text adjustments */
+@media (max-width: 768px) {
+  .top-center h1 {
+    font-size: 10vw;
+  }
+  .top-center p {
+    font-size: 3vw;
+  }
+  .icon-button {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-center h1 {
+    font-size: 12vw;
+  }
+  .top-center p {
+    font-size: 4vw;
+  }
+  .icon-button {
+    width: 50px;
+    height: 50px;
+  }
 }
