@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-/* Body */
+/* 2️⃣ Body */
 body {
   margin: 0;
   padding: 0;
@@ -17,7 +17,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 2️⃣ Loader screen */
+/* 3️⃣ Loader screen */
 #loader {
   position: fixed;
   top: 0;
@@ -55,14 +55,14 @@ body {
   border-radius: 3px 0 0 3px;
 }
 
-/* 3️⃣ Main content */
+/* 4️⃣ Main content */
 #main-content {
   display: none; /* hidden until loading finishes */
   padding-top: 20px;
 }
 
 .top-center h1 {
-  font-size: clamp(24px, 8vw, 80px); /* scales nicely on all screens */
+  font-size: clamp(24px, 8vw, 80px); /* scales nicely */
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
@@ -74,7 +74,7 @@ body {
   color: #FFD700;
 }
 
-/* 4️⃣ Buttons container */
+/* 5️⃣ Buttons container */
 .button-container {
   display: flex;
   flex-direction: column;
@@ -92,25 +92,26 @@ body {
   gap: 30px;         /* space between buttons */
 }
 
-/* Circular buttons */
+/* 6️⃣ Circular buttons with purple hover ring */
 .icon-button {
   background-color: #FFD700;
   border: 2px solid black;
-  border-radius: 50%;       /* circle */
+  border-radius: 50%;                /* circle */
   width: clamp(80px, 10vw, 140px);   /* scales dynamically */
   height: clamp(80px, 10vw, 140px);
-  min-width: 60px;          /* minimum size for mobile */
+  min-width: 60px;
   min-height: 60px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .icon-button:hover {
-  transform: scale(1.2);
-  background-color: #ffea00;
+  transform: scale(1.2);            /* same scale effect */
+  background-color: #ffea00;        /* yellow highlight */
+  box-shadow: 0 0 0 6px purple;     /* purple ring around button */
 }
 
 /* Images inside buttons */
@@ -120,7 +121,7 @@ body {
   object-fit: contain;
 }
 
-/* 5️⃣ Bouncing yellow line at the bottom */
+/* 7️⃣ Bouncing yellow line at the bottom */
 .bouncing-line {
   position: fixed;
   bottom: 0;
@@ -138,7 +139,7 @@ body {
   100% { transform: translateY(0); }
 }
 
-/* 6️⃣ Responsive adjustments */
+/* 8️⃣ Responsive adjustments */
 @media (max-width: 1024px) {
   .top-center h1 { font-size: clamp(24px, 10vw, 80px); }
   .top-center p  { font-size: clamp(14px, 3vw, 32px); }
