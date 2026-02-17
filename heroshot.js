@@ -81,14 +81,9 @@ nextBtn.addEventListener('click', () => {
 // ==========================
 // Back button event
 // ==========================
-
-const backButton = document.getElementById('backButton');
-
 backButton.addEventListener('click', () => {
-  // Go back to previous page
-  window.history.back();
-  // OR if you want a fixed page:
-  // location.href = 'shooters.html';
+  // Change this to your menu page
+  location.href = 'shooters.html';
 });
 
 // ==========================
