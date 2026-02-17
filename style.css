@@ -117,10 +117,14 @@ body {
 }
 
 .icon-button img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
+  width: 100%;          /* fill the button */
+  height: 100%;         /* fill the button */
+  object-fit: contain;   /* keep aspect ratio */
+  pointer-events: none;  /* so clicks go to the button */
+  display: block;        /* remove inline spacing issues */
+  border-radius: 50%;    /* optional: keep image circular inside button */
 }
+
 
 /* 7️⃣ Bouncing yellow line at the bottom */
 .bouncing-line {
