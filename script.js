@@ -13,20 +13,23 @@ setInterval(() => {
 // Randomized loading bar
 let progress = 0;
 
-function randomStep() {
-  // Increase progress by random amount (1–3%)
-  progress += Math.random() * 3;
+function randomFill() {
+  // Increase progress by random amount (1–6%)
+  progress += Math.random() * 6;
   if (progress > 100) progress = 100;
   loadingBar.style.width = progress + '%';
 
   if (progress < 100) {
-    // Call next step after random 20–50ms
-    setTimeout(randomStep, 20 + Math.random() * 30);
+    // Random next step between 20–80ms
+    setTimeout(randomFill, 20 + Math.random() * 60);
   } else {
-    loadingScreen.style.display = 'none';
+    // Fully loaded
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+    }, 200); // small delay before hiding
   }
 }
 
-// Start the loading
-randomStep();
+// Start loading
+randomFill();
 </script>
