@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-/* 2️⃣ Body styling */
+/* 2️⃣ Body */
 body {
   margin: 0;
   padding: 0;
@@ -14,27 +14,44 @@ body {
   background-color: #2a2f35;
   color: #FFD700;
   text-align: center;
+  overflow: hidden; /* prevents scroll during loading */
 }
 
-/* 3️⃣ Top-centered container */
-.top-center {
-  padding-top: 20px;
+/* 3️⃣ Loader styles */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  white-space: nowrap;     /* force everything on one line */
-  overflow: hidden;        /* hide overflow if too big */
+  height: 100%;
+  background-color: #2a2f35;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-/* 4️⃣ Title styling */
-h1 {
-  font-size: 8vw;          /* scales with viewport width */
+#loader h1 {
+  font-size: 8vw;       /* scales with screen width */
+  color: #FFD700;
+  margin: 0;
+  white-space: nowrap;   /* always on one line */
+}
+
+/* 4️⃣ Main content initially hidden */
+#main-content {
+  display: none;
+  padding-top: 20px;
+}
+
+.top-center h1 {
+  font-size: 8vw;        /* scales with screen width */
   margin: 0;
   line-height: 1.2;
-  display: inline-block;
-  text-overflow: ellipsis; /* will show "..." if too big */
+  white-space: nowrap;
 }
 
-/* 5️⃣ Subtitle styling */
-p {
+.top-center p {
   font-size: 2vw;
   margin-top: 10px;
   color: #FFD700;
