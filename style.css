@@ -172,8 +172,14 @@ body {
 }
 
 /* ===== HERO SHOT CAROUSEL ===== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .carousel-container {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -182,16 +188,17 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  width: 100%;
 }
 
 /* Weapon title */
 #weaponTitle {
-  color: #FFD700; /* Yellow */
+  color: #FFD700;
   font-family: 'Splatoon1', Arial, sans-serif;
   font-size: clamp(28px, 5vw, 70px);
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
   user-select: none;
-  text-shadow: 2px 2px 4px #000; /* Optional: nice shadow */
+  text-shadow: 2px 2px 4px #000;
 }
 
 /* Carousel row */
@@ -205,17 +212,12 @@ body {
 /* Weapon image */
 .carousel img {
   max-width: 600px;
-  width: 80vw;  /* scales on smaller screens */
+  width: 80vw;
   height: auto;
   user-select: none;
   border: 5px solid #FFD700;
   border-radius: 15px;
   box-shadow: 0 0 20px #000;
-  transition: transform 0.3s ease;
-}
-
-.carousel img:hover {
-  transform: scale(1.03);
 }
 
 /* Arrows */
