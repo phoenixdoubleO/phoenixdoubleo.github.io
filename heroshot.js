@@ -14,16 +14,12 @@ const backButton = document.getElementById('backButton');
 const checkImage = 'checkmark.png';
 const emptyImage = '';
 
-// ==========================
 // Unique key per weapon
-// ==========================
 function getWeaponKey() {
   return `checked-${images[currentIndex].name}`;
 }
 
-// ==========================
 // Update check button
-// ==========================
 function updateCheckButton() {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
@@ -37,9 +33,7 @@ function updateCheckButton() {
   }
 }
 
-// ==========================
 // Toggle checkmark
-// ==========================
 checkButton.addEventListener('click', () => {
   const key = getWeaponKey();
   const isChecked = localStorage.getItem(key) === 'true';
@@ -47,9 +41,7 @@ checkButton.addEventListener('click', () => {
   updateCheckButton();
 });
 
-// ==========================
 // Update carousel
-// ==========================
 function updateCarousel() {
   const current = images[currentIndex];
   imageElement.src = current.src;
@@ -61,16 +53,13 @@ function updateCarousel() {
   updateCheckButton();
 }
 
-// ==========================
-// Arrow click events
-// ==========================
+// Arrow buttons
 prevBtn.addEventListener('click', () => {
   if (currentIndex > 0) {
     currentIndex--;
     updateCarousel();
   }
 });
-
 nextBtn.addEventListener('click', () => {
   if (currentIndex < images.length - 1) {
     currentIndex++;
@@ -78,15 +67,10 @@ nextBtn.addEventListener('click', () => {
   }
 });
 
-// ==========================
-// Back button event
-// ==========================
+// Back button functionality
 backButton.addEventListener('click', () => {
-  // Change this to your menu page
-  location.href = 'shooters.html';
+  location.href = 'shooters.html'; // change if needed
 });
 
-// ==========================
 // Initialize
-// ==========================
 updateCarousel();
