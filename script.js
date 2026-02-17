@@ -25,7 +25,7 @@ const loadingInterval = setInterval(() => {
 
   if (progress >= 100) {
     clearInterval(loadingInterval);
-    clearInterval(dotInterval); // stop the dots animation
+    clearInterval(dotInterval); // stop dots
 
     // fade out loader
     loader.style.transition = 'opacity 0.5s ease';
