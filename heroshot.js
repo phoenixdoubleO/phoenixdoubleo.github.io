@@ -1,18 +1,22 @@
-// List of images in order from Weapons/HeroShot
-const images = [
-  'Weapons/HeroShot/HSR.png',
-  'Weapons/HeroShot/image2.png',
-  'Weapons/HeroShot/image3.png',
-  'Weapons/HeroShot/image4.png'
-];
-
-let currentIndex = 0;
-
 const imageElement = document.getElementById('carouselImage');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 
+let images = [];
+let currentIndex = 0;
+
+// Load JSON
+fetch('Weapons/HeroShot/images.json')
+  .then(response => response.json())
+  .then(data => {
+    images = data.map(name => `Weapons/HeroShot/${name}`);
+    updateCarousel(); // initialize
+  })
+  .catch(err => console.error('Failed to load images:', err));
+
 function updateCarousel() {
+  if (images.length === 0) return;
+
   imageElement.src = images[currentIndex];
 
   // Disable left arrow if at start
@@ -43,6 +47,3 @@ nextBtn.addEventListener('click', () => {
     updateCarousel();
   }
 });
-
-// Initialize
-updateCarousel();
