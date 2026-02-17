@@ -1,39 +1,33 @@
-const loader = document.getElementById('loader');
-const mainContent = document.getElementById('main-content');
-const fill = document.querySelector('.loading-fill');
-const loadingText = document.getElementById('loading-text');
+<script>
+const loadingScreen = document.querySelector('.loading-screen'); // your loading overlay
+const loadingBar = document.querySelector('.loading-bar-fill');   // the fill inside
 
-let progress = 0;
+// Check if the page has been visited in this session
+let isFirstLoad = !sessionStorage.getItem('visited');
 
-// Animate dots in "Loading"
-let dotCount = 0;
-const dotInterval = setInterval(() => {
-  dotCount = (dotCount % 3) + 1; // cycles 1 → 2 → 3
-  loadingText.textContent = 'Loading' + '.'.repeat(dotCount);
-}, 500);
+if (isFirstLoad) {
+    sessionStorage.setItem('visited', 'true'); // mark as visited
 
-// Fill loading bar randomly
-function randomIncrement() {
-  return Math.random() * 15;
+    // Full loading duration (example: 3 seconds)
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 1; // adjust speed
+        loadingBar.style.width = progress + '%';
+        if (progress >= 100) {
+            clearInterval(interval);
+            loadingScreen.style.display = 'none';
+        }
+    }, 30); // 30ms per step = ~3 seconds total
+} else {
+    // Short loading duration (example: 0.5 seconds)
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 5; // faster
+        loadingBar.style.width = progress + '%';
+        if (progress >= 100) {
+            clearInterval(interval);
+            loadingScreen.style.display = 'none';
+        }
+    }, 10); // 10ms per step = ~0.5 seconds
 }
-
-const loadingInterval = setInterval(() => {
-  progress += randomIncrement();
-  if (progress > 100) progress = 100;
-
-  fill.style.width = progress + '%';
-
-  if (progress >= 100) {
-    clearInterval(loadingInterval);
-    clearInterval(dotInterval);
-
-    // fade out loader
-    loader.style.transition = 'opacity 0.5s ease';
-    loader.style.opacity = '0';
-
-    setTimeout(() => {
-      loader.style.display = 'none';
-      mainContent.style.display = 'block';
-    }, 500);
-  }
-}, 200);
+</script>
