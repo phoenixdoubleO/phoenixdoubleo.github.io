@@ -7,26 +7,28 @@
 </head>
 <body>
 
-  <div class="carousel-container">
-  <!-- Weapon title -->
-  <h1 id="weaponTitle">Loading...</h1>
+  <!-- Back button top-left -->
+  <button id="backButton">Back</button>
 
-  <!-- Carousel row -->
-  <div class="carousel">
-    <button class="arrow left" id="prevBtn">◀</button>
-    <img id="carouselImage" src="image1.png" alt="Hero Shot">
-    <button class="arrow right" id="nextBtn">▶</button>
+  <div class="carousel-container">
+
+    <!-- Weapon title -->
+    <h1 id="weaponTitle">Loading...</h1>
+
+    <!-- Carousel row -->
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="image1.png" alt="Hero Shot">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <!-- Checkmark button -->
+    <button id="checkButton"></button>
+
   </div>
 
-  <!-- Checkmark button -->
-  <button id="checkButton"></button>
-</div>
-
-<!-- Back button outside carousel container -->
-<button id="backButton">Back</button>
-
-<!-- Bouncing yellow line -->
-<div class="bouncing-line"></div>
+  <!-- Bouncing yellow line -->
+  <div class="bouncing-line"></div>
 
   <script src="heroshot.js"></script>
 </body>
