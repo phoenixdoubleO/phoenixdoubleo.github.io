@@ -21,11 +21,11 @@ body {
   padding-top: 50px;  /* distance from top of screen */
 }
 
-/* 4️⃣ Title styling */
 h1 {
-  font-size: 4em;
+  font-size: clamp(2em, 8vw, 4em);
   margin: 0;
 }
+
 
 /* 5️⃣ Subtitle styling */
 p {
