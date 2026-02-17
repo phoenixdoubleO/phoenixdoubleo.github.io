@@ -42,3 +42,27 @@ body {
   margin-left: 220px;
   padding: 20px;
 }
+
+/* Toggle button */
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 26px;
+  background: #2e2e2e;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Sidebar closed */
+.sidebar.closed {
+  transform: translateX(-100%);
+}
+
+/* Smooth animation */
+.sidebar {
+  transition: transform 0.3s ease;
+}
