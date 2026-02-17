@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Squeezer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <div class="carousel-container">
+    <h1 id="weaponTitle">Squeezer</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="SZ.png" alt="Squeezer">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <script>
+    const weapons = [
+      { src: 'SZ.png', name: 'Squeezer' },
+      { src: 'FSZ.png', name: 'Foil Squeezer' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>

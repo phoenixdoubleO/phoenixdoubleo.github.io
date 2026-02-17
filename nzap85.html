@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>N-ZAP ’85</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <div class="carousel-container">
+    <h1 id="weaponTitle">N-ZAP ’85</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="NZ5.png" alt="N-ZAP ’85">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <script>
+    const weapons = [
+      { src: 'NZ5.png', name: 'N-ZAP ’85' },
+      { src: 'NZ9.png', name: 'N-ZAP ’89' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>

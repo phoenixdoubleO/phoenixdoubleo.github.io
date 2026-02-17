@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>.52 Gal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <div class="carousel-container">
+    <h1 id="weaponTitle">.52 Gal</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="52G.png" alt=".52 Gal">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <script>
+    const weapons = [
+      { src: '52G.png', name: '.52 Gal' },
+      { src: '52GD.png', name: '.52 Gal Deco' },
+      { src: 'C52G.png', name: 'Clawz .52 Gal' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>H-3 Nozzlenose</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <div class="carousel-container">
+    <h1 id="weaponTitle">H-3 Nozzlenose</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="H3.png" alt="H-3 Nozzlenose">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <script>
+    const weapons = [
+      { src: 'H3.png', name: 'H-3 Nozzlenose' },
+      { src: 'H3D.png', name: 'H-3 Nozzlenose D' },
+      { src: 'H3NV.png', name: 'H-3 Nozzlenose VIP-R' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>

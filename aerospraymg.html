@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aerospray MG</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <div class="carousel-container">
+    <h1 id="weaponTitle">Aerospray MG</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="ASM.png" alt="Aerospray MG">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <script>
+    const weapons = [
+      { src: 'ASM.png', name: 'Aerospray MG' },
+      { src: 'ASR.png', name: 'Aerospray RG' },
+      { src: 'CAS.png', name: 'Colorz Aerospray' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>

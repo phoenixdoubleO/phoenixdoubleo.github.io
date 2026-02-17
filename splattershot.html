@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Splattershot</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <!-- Back Button -->
+  <button id="backButton" onclick="history.back()">Back</button>
+
+  <!-- Carousel Container -->
+  <div class="carousel-container">
+    <h1 id="weaponTitle">Splattershot</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="SS.png" alt="Splattershot">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <!-- Bouncing Yellow Line -->
+  <div class="bouncing-line"></div>
+
+  <!-- Weapons Array -->
+  <script>
+    const weapons = [
+      { src: 'SS.png', name: 'Splattershot' },
+      { src: 'TTKS.png', name: 'Tentatek Splattershot' },
+      { src: 'OSR.png', name: 'Order Shot Replica' },
+      { src: 'OTSR.png', name: 'Octo Shot Replica' },
+      { src: 'GZS.png', name: 'Glamorz Splattershot' }
+    ];
+  </script>
+
+  <script src="heroshot.js"></script>
+</body>
+</html>
