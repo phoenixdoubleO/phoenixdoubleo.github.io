@@ -54,11 +54,10 @@ body {
   position: fixed;
   top: 15px;
   left: 15px;
-  font-size: 26px;
-  background: #2e2e2e;
-  color: white;
-  border: none;
-  padding: 6px 10px;
+  border: none;           /* removes border */
+  background: transparent; /* removes the grey/colored box */
+  padding: 0;             /* removes extra space around the image */
   cursor: pointer;
   z-index: 1000;
 }
+
