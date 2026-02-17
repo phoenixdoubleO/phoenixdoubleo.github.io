@@ -66,12 +66,18 @@ body {
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
+  user-select: none; /* prevents highlighting */
+}
+
 }
 
 .top-center p {
   font-size: clamp(14px, 2.5vw, 32px);
   margin-top: 10px;
   color: #FFD700;
+  user-select: none; /* prevents highlighting */
+}
+
 }
 
 /* 5️⃣ Buttons container */
