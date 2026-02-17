@@ -10,24 +10,26 @@ setInterval(() => {
   dots.textContent = '.'.repeat(dotCount);
 }, 500);
 
-// Randomized loading bar
+// Truly random loading bar
 let progress = 0;
 
 function randomFill() {
-  // Increase progress by random amount (1–6%)
-  progress += Math.random() * 6;
+  if (progress >= 100) {
+    loadingScreen.style.display = 'none';
+    return;
+  }
+
+  // Random increment: bigger variation for visible jumps
+  const increment = 2 + Math.random() * 8; // 2–10%
+  progress += increment;
   if (progress > 100) progress = 100;
+
   loadingBar.style.width = progress + '%';
 
-  if (progress < 100) {
-    // Random next step between 20–80ms
-    setTimeout(randomFill, 20 + Math.random() * 60);
-  } else {
-    // Fully loaded
-    setTimeout(() => {
-      loadingScreen.style.display = 'none';
-    }, 200); // small delay before hiding
-  }
+  // Random next step time: 50–250ms
+  const nextStep = 50 + Math.random() * 200;
+
+  setTimeout(randomFill, nextStep);
 }
 
 // Start loading
