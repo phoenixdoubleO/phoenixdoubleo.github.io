@@ -19,27 +19,23 @@ body {
 /* 3️⃣ Top-centered container */
 .top-center {
   padding-top: 20px;
-  width: 100%;            /* take full width */
-  overflow: hidden;        /* prevent overflow */
+  width: 100%;
+  white-space: nowrap;     /* force everything on one line */
+  overflow: hidden;        /* hide overflow if too big */
 }
 
-/* 4️⃣ Title styling — scales but never overflows */
+/* 4️⃣ Title styling */
 h1 {
-  font-size: 8vw;          /* scales with screen width */
+  font-size: 8vw;          /* scales with viewport width */
   margin: 0;
   line-height: 1.2;
   display: inline-block;
-  max-width: 95%;          /* never wider than screen */
-  word-wrap: break-word;   /* wrap if needed */
+  text-overflow: ellipsis; /* will show "..." if too big */
 }
 
 /* 5️⃣ Subtitle styling */
 p {
-  font-size: 2vw;           /* scales smaller */
+  font-size: 2vw;
   margin-top: 10px;
   color: #FFD700;
-  max-width: 95%;
-  word-wrap: break-word;
-  margin-left: auto;
-  margin-right: auto;
 }
