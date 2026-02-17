@@ -62,17 +62,18 @@ body {
 }
 
 .top-center h1 {
-  font-size: 8vw;
+  font-size: clamp(24px, 8vw, 80px); /* min 24px, scales with 8vw, max 80px */
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
 }
 
 .top-center p {
-  font-size: 2vw;
+  font-size: clamp(14px, 2.5vw, 32px); /* min 14px, scales with 2.5vw, max 32px */
   margin-top: 10px;
   color: #FFD700;
 }
+
 
 /* Buttons container */
 .button-container {
