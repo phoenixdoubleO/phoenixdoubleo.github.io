@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hero Name Here</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <!-- Back button top-left -->
+  <button id="backButton">Back</button>
+
+  <!-- Carousel container -->
+  <div class="carousel-container">
+    <h1 id="weaponTitle">Loading...</h1>
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="weapon1.png" alt="Hero Shot">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+    <button id="checkButton"></button>
+  </div>
+
+  <!-- Bouncing yellow line -->
+  <div class="bouncing-line"></div>
+
+  <!-- ===== WEAPONS ARRAY ===== -->
+  <script>
+    // REPLACE THESE WITH YOUR HERO IMAGES AND NAMES
+    const weapons = [
+      { src: 'ssj.png', name: 'Splattershot Jr' },
+      { src: 'cssj.png', name: 'Custom Splattershot Jr' }
+      // Add more as needed
+    ];
+  </script>
+
+  <!-- Generic Hero Shot JS -->
+  <script src="heroshot.js"></script>
+</body>
+</html>
