@@ -1,23 +1,24 @@
-/* Reset default margins/padding */
+/* Reset default margins/padding and full height */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: Arial, sans-serif;
-  background-color: #2a2f35; /* grey background */
+  background-color: #d3d3d3; /* grey background */
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering */
+  text-align: center;      /* center text inside the div */
 }
 
-/* Main content styling */
-.content {
-  padding: 20px;
-  text-align: center; /* optional, centers your text */
+/* Optional: style for title and subtitle */
+h1 {
+  font-size: 4em;
+  margin: 0;
 }
 
-.content h1 {
-  margin-top: 50px;
-  font-size: 3em;
-}
-
-.content p {
-  font-size: 1.2em;
+p {
+  font-size: 1.5em;
+  margin-top: 10px;
+  color: #333; /* darker text for contrast */
 }
