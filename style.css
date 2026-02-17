@@ -193,12 +193,12 @@ html, body {
 
 /* Weapon title */
 #weaponTitle {
-  color: #FFD700;
+  color: #FFD700; /* Yellow */
   font-family: 'Splatoon1', Arial, sans-serif;
   font-size: clamp(28px, 5vw, 70px);
   margin: 0 0 20px 0;
   user-select: none;
-  text-shadow: 2px 2px 4px #000;
+  text-shadow: 2px 2px 4px #000; /* optional shadow for readability */
 }
 
 /* Carousel row */
@@ -212,12 +212,11 @@ html, body {
 /* Weapon image */
 .carousel img {
   max-width: 600px;
-  width: 80vw;
+  width: 80vw;  /* scales on smaller screens */
   height: auto;
   user-select: none;
-  border: 5px solid #FFD700;
-  border-radius: 15px;
-  box-shadow: 0 0 20px #000;
+  border-radius: 15px; /* optional rounded corners */
+  box-shadow: 0 0 20px #000; /* subtle shadow */
 }
 
 /* Arrows */
