@@ -1,23 +1,14 @@
-
-
-/* Font import */
-@font-face {
-  font-family: 'Splatoon1';
-  src: url('Splatoon1.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* BODY / GENERAL */
-body {
-  margin: 0;
-  padding: 0;
+/* ===== SCOPE EVERYTHING TO HERO SHOT PAGE ===== */
+.heroshot-page {
   font-family: 'Splatoon1', Arial, sans-serif;
-  background-color: #1a1a1a; /* keep dark background */
+  background-color: #1a1a1a; /* only hero shot page */
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
-/* ===== BACK BUTTON ===== */
-#backButton {
+/* BACK BUTTON */
+.heroshot-page #backButton {
   position: fixed;
   top: 20px;
   left: 20px;
@@ -32,14 +23,14 @@ body {
   z-index: 10;
 }
 
-#backButton:hover {
-  background-color: #222;
+.heroshot-page #backButton:hover {
   transform: scale(1.05);
+  background-color: #222;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-/* ===== CAROUSEL CONTAINER ===== */
-.carousel-container {
+/* CAROUSEL CONTAINER */
+.heroshot-page .carousel-container {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -52,7 +43,7 @@ body {
 }
 
 /* Weapon title */
-#weaponTitle {
+.heroshot-page #weaponTitle {
   color: #FFD700;
   font-size: clamp(28px, 5vw, 70px);
   margin: 0;
@@ -60,24 +51,25 @@ body {
   text-shadow: 2px 2px 4px #000;
 }
 
-/* ===== CAROUSEL ===== */
-.carousel {
+/* CAROUSEL */
+.heroshot-page .carousel {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 50px;
 }
 
-.carousel img {
+.heroshot-page .carousel img {
   max-width: 600px;
   width: 80vw;
   height: auto;
   border-radius: 15px;
   box-shadow: 0 0 20px #000;
+  user-select: none;
 }
 
 /* Arrows */
-.arrow {
+.heroshot-page .arrow {
   font-size: 50px;
   background: none;
   border: none;
@@ -86,17 +78,17 @@ body {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.arrow.disabled {
+.heroshot-page .arrow.disabled {
   color: #b59b00;
   cursor: default;
 }
 
-.arrow:hover:not(.disabled) {
+.heroshot-page .arrow:hover:not(.disabled) {
   transform: scale(1.2);
 }
 
-/* ===== CHECKMARK BUTTON ===== */
-#checkButton {
+/* CHECKMARK BUTTON */
+.heroshot-page #checkButton {
   width: 100px;
   height: 100px;
   background-color: #000;
@@ -109,7 +101,7 @@ body {
   transition: transform 0.2s ease, background-image 0.2s ease;
 }
 
-#checkButton.pop {
+.heroshot-page #checkButton.pop {
   animation: popAnimation 0.3s ease;
 }
 
@@ -119,8 +111,8 @@ body {
   100% { transform: scale(1); }
 }
 
-/* ===== BOUNCING YELLOW LINE ===== */
-.bouncing-line {
+/* BOUNCING YELLOW LINE */
+.heroshot-page .bouncing-line {
   position: fixed;
   bottom: 0;
   left: 0;

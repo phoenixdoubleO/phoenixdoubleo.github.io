@@ -1,7 +1,3 @@
-const images = [
-  { src: 'image1.png', name: 'Hero Shot Replica' }
-];
-
 let currentIndex = 0;
 
 const imageElement = document.getElementById('carouselImage');
@@ -67,9 +63,9 @@ nextBtn.addEventListener('click', () => {
   }
 });
 
-// Back button functionality
+// Back button
 backButton.addEventListener('click', () => {
-  location.href = 'shooters.html'; // change if needed
+  location.href = 'shooters.html'; // or window.history.back();
 });
 
 // Initialize
