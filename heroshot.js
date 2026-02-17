@@ -1,5 +1,5 @@
 const images = [
-  { src: 'Weapons/HeroShot/image1.png', name: 'Splattershot' },
+  { src: 'Weapons/HeroShot/HSR.png', name: 'Hero Shot Replica' },
   { src: 'Weapons/HeroShot/image2.png', name: 'Splat Roller' },
   { src: 'Weapons/HeroShot/image3.png', name: 'Charger' },
   { src: 'Weapons/HeroShot/image4.png', name: 'Blaster' },
