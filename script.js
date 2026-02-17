@@ -1,29 +1,37 @@
-const loader = document.getElementById('loader');
-const mainContent = document.getElementById('main-content');
-const fill = document.querySelector('.loading-fill');
+<script>
+const loadingScreen = document.querySelector('.loading-screen');
+const loadingBar = document.querySelector('.loading-bar-fill');
+const dots = document.querySelector('.dots');
 
+// Animate dots (1-3)
+let dotCount = 0;
+setInterval(() => {
+  dotCount = (dotCount + 1) % 4;
+  dots.textContent = '.'.repeat(dotCount);
+}, 500);
+
+// Truly random loading bar
 let progress = 0;
 
-function randomIncrement() {
-  return Math.random() * 15; // random step between 0 and 15%
-}
+function randomFill() {
+  if (progress >= 100) {
+    loadingScreen.style.display = 'none';
+    return;
+  }
 
-const loadingInterval = setInterval(() => {
-  progress += randomIncrement();
+  // Random increment: bigger variation for visible jumps
+  const increment = 2 + Math.random() * 8; // 2–10%
+  progress += increment;
   if (progress > 100) progress = 100;
 
-  fill.style.width = progress + '%';
+  loadingBar.style.width = progress + '%';
 
-  if (progress >= 100) {
-    clearInterval(loadingInterval);
+  // Random next step time: 50–250ms
+  const nextStep = 50 + Math.random() * 200;
 
-    // fade out loader
-    loader.style.transition = 'opacity 0.5s ease';
-    loader.style.opacity = '0';
+  setTimeout(randomFill, nextStep);
+}
 
-    setTimeout(() => {
-      loader.style.display = 'none';
-      mainContent.style.display = 'block';
-    }, 500);
-  }
-}, 200); // update every 0.2s
+// Start loading
+randomFill();
+</script>
