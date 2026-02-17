@@ -59,36 +59,16 @@
       dots.textContent = '.'.repeat(dotCount);
     }, 500);
 
-    // Check if first visit
-    let isFirstLoad = !sessionStorage.getItem('visited');
-    if (isFirstLoad) sessionStorage.setItem('visited', 'true');
-
+    // Full loading animation every time (~3s)
     let progress = 0;
-    let interval, stepTime;
-
-    if (isFirstLoad) {
-      // Full load: ~3s
-      stepTime = 30; // 30ms per step
-      interval = setInterval(() => {
-        progress += 1;
-        loadingBar.style.width = progress + '%';
-        if (progress >= 100) {
-          clearInterval(interval);
-          loadingScreen.style.display = 'none';
-        }
-      }, stepTime);
-    } else {
-      // Short load: ~0.5s
-      stepTime = 10;
-      interval = setInterval(() => {
-        progress += 5;
-        loadingBar.style.width = progress + '%';
-        if (progress >= 100) {
-          clearInterval(interval);
-          loadingScreen.style.display = 'none';
-        }
-      }, stepTime);
-    }
+    const interval = setInterval(() => {
+      progress += 1;
+      loadingBar.style.width = progress + '%';
+      if (progress >= 100) {
+        clearInterval(interval);
+        loadingScreen.style.display = 'none';
+      }
+    }, 30); // 30ms per step = ~3 seconds total
   </script>
 
 </body>
