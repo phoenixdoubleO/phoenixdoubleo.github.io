@@ -66,14 +66,12 @@ body {
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
-  user-select: none; /* prevents highlighting */
 }
 
 .top-center p {
   font-size: clamp(14px, 2.5vw, 32px);
   margin-top: 10px;
   color: #FFD700;
-  user-select: none; /* prevents highlighting */
 }
 
 /* 5️⃣ Buttons container */
@@ -117,14 +115,10 @@ body {
 }
 
 .icon-button img {
-  width: 100%;          /* fill the button */
-  height: 100%;         /* fill the button */
-  object-fit: contain;   /* keep aspect ratio */
-  pointer-events: none;  /* so clicks go to the button */
-  display: block;        /* remove inline spacing issues */
-  border-radius: 50%;    /* optional: keep image circular inside button */
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
 }
-
 
 /* 7️⃣ Bouncing yellow line at the bottom */
 .bouncing-line {
