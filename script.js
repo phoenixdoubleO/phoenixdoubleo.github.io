@@ -10,14 +10,23 @@ setInterval(() => {
   dots.textContent = '.'.repeat(dotCount);
 }, 500);
 
-// Full loading animation every time (~3s)
+// Randomized loading bar
 let progress = 0;
-const interval = setInterval(() => {
-  progress += 1; // adjust speed
+
+function randomStep() {
+  // Increase progress by random amount (1–3%)
+  progress += Math.random() * 3;
+  if (progress > 100) progress = 100;
   loadingBar.style.width = progress + '%';
-  if (progress >= 100) {
-    clearInterval(interval);
+
+  if (progress < 100) {
+    // Call next step after random 20–50ms
+    setTimeout(randomStep, 20 + Math.random() * 30);
+  } else {
     loadingScreen.style.display = 'none';
   }
-}, 30); // 30ms per step = ~3 seconds total
+}
+
+// Start the loading
+randomStep();
 </script>
