@@ -48,10 +48,29 @@ body {
 
 .button-row {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px; /* space between buttons in a row */
+  justify-content: center;
+  gap: 20px; /* space between buttons */
 }
+
+/* Offset odd rows for staggered effect */
+.row-odd {
+  margin-left: 40px; /* adjust to taste */
+}
+
+/* Responsive: reduce offset on smaller screens */
+@media (max-width: 768px) {
+  .row-odd {
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .row-odd {
+    margin-left: 0; /* stack straight on tiny screens */
+  }
+}
+
 
 .icon-button {
   background-color: #FFD700;
