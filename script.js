@@ -1,1 +1,64 @@
-alert("JS is working");
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #d3d3d3;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #2e2e2e;
+  color: white;
+  padding-top: 20px;
+  transition: transform 0.3s ease; /* smooth animation */
+  transform: translateX(0); /* start visible */
+}
+
+.sidebar.closed {
+  transform: translateX(-100%); /* hidden */
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+}
+
+/* Main content */
+.content {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+/* Toggle button */
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 26px;
+  background: #2e2e2e;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
