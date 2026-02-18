@@ -192,24 +192,43 @@ function showDevPanel() {
   document.querySelectorAll('img').forEach(img => addImageControls(img));
 
   // Export HTML button
-  const exportBtn = document.createElement('button');
-  exportBtn.textContent = "Export HTML";
-  exportBtn.style.width = "100%";
-  exportBtn.style.marginTop = "10px";
-  exportBtn.style.padding = "8px";
-  exportBtn.style.backgroundColor = "#FFD700";
-  exportBtn.style.color = "#000";
-  exportBtn.style.border = "none";
-  exportBtn.style.borderRadius = "5px";
-  exportBtn.style.cursor = "pointer";
-  exportBtn.onclick = () => {
-    const blob = new Blob([document.documentElement.outerHTML], { type: "text/html" });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = "index.html";
-    link.click();
-  };
-  devContent.appendChild(exportBtn);
+const exportBtn = document.createElement('button');
+exportBtn.textContent = "Export HTML";
+exportBtn.style.width = "100%";
+exportBtn.style.marginTop = "10px";
+exportBtn.style.padding = "8px";
+exportBtn.style.backgroundColor = "#FFD700";
+exportBtn.style.color = "#000";
+exportBtn.style.border = "none";
+exportBtn.style.borderRadius = "5px";
+exportBtn.style.cursor = "pointer";
+
+exportBtn.onclick = () => {
+  const htmlContent = document.documentElement.outerHTML;
+  const newWindow = window.open("", "_blank");
+  newWindow.document.write(`
+    <html>
+      <head>
+        <title>Exported HTML</title>
+        <style>
+          body { background: #2a2f35; color: #FFD700; font-family: Arial, sans-serif; padding: 20px; }
+          textarea { width: 100%; height: 90vh; background: #1e2228; color: #FFD700; font-family: monospace; font-size: 14px; padding: 10px; border: none; }
+        </style>
+      </head>
+      <body>
+        <h1>Copy your HTML below:</h1>
+        <textarea id="exportArea" readonly>${htmlContent.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</textarea>
+        <script>
+          const textarea = document.getElementById('exportArea');
+          textarea.focus();
+          textarea.select();
+        <\/script>
+      </body>
+    </html>
+  `);
+  newWindow.document.close();
+};
+devContent.appendChild(exportBtn);
 
   // ======== Helper Functions ========
   function addTextControls(el) {
