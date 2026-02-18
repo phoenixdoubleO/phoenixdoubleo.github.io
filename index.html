@@ -73,382 +73,374 @@
   </script>
 
 
-<!-- ===== DEV PANEL SCRIPT ===== -->
 <script>
-let devUnlocked = false;
-let devPanelOpen = false;
+/* ===== DEV PANEL SCRIPT ===== */
+(() => {
+  const PANEL_KEY = 'devPanelUnlocked'; // sessionStorage key
 
-// Remember unlocked in session
-if (sessionStorage.getItem('devUnlocked') === 'true') devUnlocked = true;
+  let devPanel, devContent;
+  let changeHistory = [];
 
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.shiftKey && e.key === 'D') { // Ctrl+Shift+D
-    if (!devUnlocked) {
-      const password = prompt("Enter dev password:");
-      if (password === "SuperSecret123") { // change your password
-        devUnlocked = true;
-        sessionStorage.setItem('devUnlocked', 'true');
-        showDevPanel();
-      } else {
-        alert("Wrong password!");
+  function createDevPanel() {
+    // Prevent multiple panels
+    if (document.getElementById('devPanel')) return;
+
+    devPanel = document.createElement('div');
+    devPanel.id = 'devPanel';
+    devPanel.style.position = 'fixed';
+    devPanel.style.top = '10px';
+    devPanel.style.right = '10px';
+    devPanel.style.width = '300px';
+    devPanel.style.height = '400px';
+    devPanel.style.backgroundColor = '#1e2228';
+    devPanel.style.color = '#FFD700';
+    devPanel.style.border = '2px solid #FFD700';
+    devPanel.style.zIndex = 9999;
+    devPanel.style.overflowY = 'auto';
+    devPanel.style.padding = '10px';
+    devPanel.style.fontFamily = 'Arial, sans-serif';
+    devPanel.style.boxShadow = '0 0 15px #FFD700';
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.style.float = 'right';
+    closeBtn.style.background = '#FF5555';
+    closeBtn.style.color = '#FFF';
+    closeBtn.style.border = 'none';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.style.fontWeight = 'bold';
+    closeBtn.onclick = () => {
+      devPanel.remove();
+    };
+    devPanel.appendChild(closeBtn);
+
+    // Title
+    const title = document.createElement('h2');
+    title.textContent = 'Dev Panel';
+    title.style.textAlign = 'center';
+    devPanel.appendChild(title);
+
+    // Content container
+    devContent = document.createElement('div');
+    devPanel.appendChild(devContent);
+
+    document.body.appendChild(devPanel);
+
+    // Add main control buttons
+    addExportButton();
+    addRevertButton();
+    addTextButton();
+    addImageButton();
+  }
+
+  /* ===== DEV CONTROLS ===== */
+
+  function addExportButton() {
+    const exportBtn = document.createElement('button');
+    exportBtn.textContent = 'Export HTML';
+    styleDevButton(exportBtn, '#FFD700', '#000');
+    exportBtn.onclick = () => {
+      const htmlContent = document.documentElement.outerHTML;
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(`
+        <html>
+          <head>
+            <title>Exported HTML</title>
+            <style>
+              body { background: #2a2f35; color: #FFD700; font-family: Arial, sans-serif; padding: 20px; }
+              textarea { width: 100%; height: 90vh; background: #1e2228; color: #FFD700; font-family: monospace; font-size: 14px; padding: 10px; border: none; }
+            </style>
+          </head>
+          <body>
+            <h1>Copy your HTML below:</h1>
+            <textarea id="exportArea" readonly>${htmlContent.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</textarea>
+            <script>
+              const textarea = document.getElementById('exportArea');
+              textarea.focus();
+              textarea.select();
+            <\/script>
+          </body>
+        </html>
+      `);
+      newWindow.document.close();
+    };
+    devContent.appendChild(exportBtn);
+  }
+
+  function addRevertButton() {
+    const revertBtn = document.createElement('button');
+    revertBtn.textContent = 'Revert Last Change';
+    styleDevButton(revertBtn, '#FF5555', '#FFF');
+    revertBtn.onclick = () => {
+      if (changeHistory.length === 0) {
+        alert('No changes to revert!');
+        return;
       }
-    } else {
-      if (!devPanelOpen) showDevPanel();
-    }
+      const lastChange = changeHistory.pop();
+
+      if (lastChange.type === 'text') {
+        lastChange.el.textContent = lastChange.oldValue.text;
+        lastChange.el.style.color = lastChange.oldValue.color;
+        lastChange.el.style.fontFamily = lastChange.oldValue.font;
+        lastChange.el.style.fontWeight = lastChange.oldValue.bold ? 'bold' : 'normal';
+        if (lastChange.oldValue.left) {
+          lastChange.el.style.position = 'absolute';
+          lastChange.el.style.left = lastChange.oldValue.left;
+          lastChange.el.style.top = lastChange.oldValue.top;
+        }
+      } else if (lastChange.type === 'image') {
+        lastChange.el.src = lastChange.oldValue.src;
+        lastChange.el.style.transform = `rotate(${lastChange.oldValue.rotate || 0}deg) scale(${lastChange.oldValue.scale || 1})`;
+        lastChange.el.style.opacity = lastChange.oldValue.opacity || 1;
+        if (lastChange.oldValue.left) {
+          lastChange.el.style.position = 'absolute';
+          lastChange.el.style.left = lastChange.oldValue.left;
+          lastChange.el.style.top = lastChange.oldValue.top;
+        }
+      }
+    };
+    devContent.appendChild(revertBtn);
   }
-});
 
-function showDevPanel() {
-  if (devPanelOpen) return;
-  devPanelOpen = true;
+  function addTextButton() {
+    const textBtn = document.createElement('button');
+    textBtn.textContent = 'Add Text';
+    styleDevButton(textBtn, '#00AAFF', '#FFF');
 
-  const panel = document.createElement('div');
-  panel.id = "devPanel";
-  panel.style.position = "fixed";
-  panel.style.top = "10px";
-  panel.style.right = "10px";
-  panel.style.width = "400px";
-  panel.style.height = "80vh";
-  panel.style.backgroundColor = "rgba(0,0,0,0.95)";
-  panel.style.color = "#FFD700";
-  panel.style.zIndex = 9999;
-  panel.style.overflowY = "auto";
-  panel.style.padding = "20px";
-  panel.style.border = "3px solid #FFD700";
-  panel.style.borderRadius = "10px";
-  panel.style.boxShadow = "0 0 15px #FFD700";
-  panel.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h2>Dev Mode</h2>
-      <button id="closeDev" style="
-        background:red;
-        color:white;
-        font-weight:bold;
-        font-size:16px;
-        border:none;
-        border-radius:50%;
-        width:30px;
-        height:30px;
-        cursor:pointer;
-      ">X</button>
-    </div>
-    <button id="addTextBox" style="
-      width:100%;
-      padding:6px;
-      margin-bottom:10px;
-      background:#FFD700;
-      color:#000;
-      border:none;
-      border-radius:5px;
-      cursor:pointer;
-    ">Add Text Box</button>
-    <button id="addImage" style="
-      width:100%;
-      padding:6px;
-      margin-bottom:10px;
-      background:#FFD700;
-      color:#000;
-      border:none;
-      border-radius:5px;
-      cursor:pointer;
-    ">Add Image</button>
-    <div id="devContent"></div>
-  `;
-  document.body.appendChild(panel);
+    textBtn.onclick = () => {
+      const el = document.createElement('div');
+      el.textContent = 'New Text';
+      el.style.position = 'absolute';
+      el.style.left = '50px';
+      el.style.top = '50px';
+      el.style.color = '#FFD700';
+      el.style.fontFamily = 'Arial, sans-serif';
+      el.style.fontWeight = 'normal';
+      el.style.cursor = 'move';
+      document.body.appendChild(el);
 
-  const devContent = document.getElementById('devContent');
+      // Make draggable
+      makeDraggable(el);
 
-  // Close panel
-  document.getElementById('closeDev').addEventListener('click', () => {
-    document.body.removeChild(panel);
-    devPanelOpen = false;
-  });
+      // Text editing controls
+      addTextControls(el);
+    };
 
-  // Add Text Box
-  document.getElementById('addTextBox').addEventListener('click', () => {
-    const newText = document.createElement('p');
-    newText.textContent = "New Text";
-    newText.style.color = "#FFD700";
-    document.body.appendChild(newText);
-    addTextControls(newText);
-  });
-
-  // Add Image
-  document.getElementById('addImage').addEventListener('click', () => {
-    const url = prompt("Enter image URL or relative path:");
-    if (!url) return;
-    const newImg = document.createElement('img');
-    newImg.src = url;
-    newImg.style.maxWidth = "300px";
-    newImg.style.display = "block";
-    newImg.style.marginBottom = "10px";
-    document.body.appendChild(newImg);
-    addImageControls(newImg);
-  });
-
-  // Stack to store history
-let changeHistory = [];
-
-// Revert last change button
-const revertBtn = document.createElement('button');
-revertBtn.textContent = "Revert Last Change";
-revertBtn.style.width = "100%";
-revertBtn.style.marginTop = "10px";
-revertBtn.style.padding = "8px";
-revertBtn.style.backgroundColor = "#FF5555";
-revertBtn.style.color = "#FFF";
-revertBtn.style.border = "none";
-revertBtn.style.borderRadius = "5px";
-revertBtn.style.cursor = "pointer";
-
-revertBtn.onclick = () => {
-  if (changeHistory.length === 0) {
-    alert("No changes to revert!");
-    return;
+    devContent.appendChild(textBtn);
   }
-  const lastChange = changeHistory.pop();
 
-  if (lastChange.type === 'text') {
-    lastChange.el.textContent = lastChange.oldValue.text;
-    lastChange.el.style.color = lastChange.oldValue.color;
-    lastChange.el.style.fontFamily = lastChange.oldValue.font;
-    lastChange.el.style.fontWeight = lastChange.oldValue.bold ? 'bold' : 'normal';
-    if (lastChange.oldValue.left) {
-      lastChange.el.style.position = 'absolute';
-      lastChange.el.style.left = lastChange.oldValue.left;
-      lastChange.el.style.top = lastChange.oldValue.top;
-    }
-  } else if (lastChange.type === 'image') {
-    lastChange.el.src = lastChange.oldValue.src;
-    lastChange.el.style.transform = `rotate(${lastChange.oldValue.rotate || 0}deg) scale(${lastChange.oldValue.scale || 1})`;
-    lastChange.el.style.opacity = lastChange.oldValue.opacity || 1;
-    if (lastChange.oldValue.left) {
-      lastChange.el.style.position = 'absolute';
-      lastChange.el.style.left = lastChange.oldValue.left;
-      lastChange.el.style.top = lastChange.oldValue.top;
-    }
+  function addImageButton() {
+    const imgBtn = document.createElement('button');
+    imgBtn.textContent = 'Add Image';
+    styleDevButton(imgBtn, '#AA00FF', '#FFF');
+
+    imgBtn.onclick = () => {
+      const img = document.createElement('img');
+      img.src = 'placeholder.png';
+      img.style.position = 'absolute';
+      img.style.left = '100px';
+      img.style.top = '100px';
+      img.style.width = '150px';
+      img.style.height = '150px';
+      img.style.cursor = 'move';
+      document.body.appendChild(img);
+
+      makeDraggable(img);
+      addImageControls(img);
+    };
+
+    devContent.appendChild(imgBtn);
   }
-};
 
-// Add button to devContent
-devContent.appendChild(revertBtn);
+  /* ===== HELPERS ===== */
 
-  // Initialize existing text elements
-  document.querySelectorAll('h1, h2, h3, p').forEach(el => addTextControls(el));
-  // Initialize existing images
-  document.querySelectorAll('img').forEach(img => addImageControls(img));
+  function styleDevButton(btn, bg, color) {
+    btn.style.width = '100%';
+    btn.style.marginTop = '10px';
+    btn.style.padding = '8px';
+    btn.style.backgroundColor = bg;
+    btn.style.color = color;
+    btn.style.border = 'none';
+    btn.style.borderRadius = '5px';
+    btn.style.cursor = 'pointer';
+  }
 
-  // Export HTML button
-const exportBtn = document.createElement('button');
-exportBtn.textContent = "Export HTML";
-exportBtn.style.width = "100%";
-exportBtn.style.marginTop = "10px";
-exportBtn.style.padding = "8px";
-exportBtn.style.backgroundColor = "#FFD700";
-exportBtn.style.color = "#000";
-exportBtn.style.border = "none";
-exportBtn.style.borderRadius = "5px";
-exportBtn.style.cursor = "pointer";
+  function makeDraggable(el) {
+    let offsetX, offsetY;
+    el.addEventListener('mousedown', e => {
+      offsetX = e.clientX - el.offsetLeft;
+      offsetY = e.clientY - el.offsetTop;
+      function move(e) {
+        el.style.left = e.clientX - offsetX + 'px';
+        el.style.top = e.clientY - offsetY + 'px';
+      }
+      function up() {
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', up);
+      }
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    });
+  }
 
-exportBtn.onclick = () => {
-  const htmlContent = document.documentElement.outerHTML;
-  const newWindow = window.open("", "_blank");
-  newWindow.document.write(`
-    <html>
-      <head>
-        <title>Exported HTML</title>
-        <style>
-          body { background: #2a2f35; color: #FFD700; font-family: Arial, sans-serif; padding: 20px; }
-          textarea { width: 100%; height: 90vh; background: #1e2228; color: #FFD700; font-family: monospace; font-size: 14px; padding: 10px; border: none; }
-        </style>
-      </head>
-      <body>
-        <h1>Copy your HTML below:</h1>
-        <textarea id="exportArea" readonly>${htmlContent.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</textarea>
-        <script>
-          const textarea = document.getElementById('exportArea');
-          textarea.focus();
-          textarea.select();
-        <\/script>
-      </body>
-    </html>
-  `);
-  newWindow.document.close();
-};
-devContent.appendChild(exportBtn);
-
-  // ======== Helper Functions ========
   function addTextControls(el) {
-    const keyPrefix = `dev_text_${location.pathname}_${Array.from(document.querySelectorAll('h1,h2,h3,p')).indexOf(el)}`;
-    const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
-
-    if (saved.text) el.textContent = saved.text;
-    if (saved.color) el.style.color = saved.color;
-    if (saved.font) el.style.fontFamily = saved.font;
-    if (saved.bold) el.style.fontWeight = saved.bold ? 'bold' : 'normal';
-    if (saved.left) el.style.position = 'absolute', el.style.left = saved.left, el.style.top = saved.top;
-
-    makeDraggable(el, keyPrefix);
-
     const container = document.createElement('div');
-    container.style.marginBottom = '10px';
 
     // Text input
     const input = document.createElement('input');
-    input.type = "text";
+    input.type = 'text';
     input.value = el.textContent;
     input.style.width = '100%';
-    input.style.marginBottom = '2px';
-    input.addEventListener('input', () => {
-      el.textContent = input.value;
-      saveText();
-    });
     container.appendChild(input);
 
     // Color picker
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
-    colorInput.value = saved.color || '#FFD700';
-    colorInput.addEventListener('input', () => { el.style.color = colorInput.value; saveText(); });
+    colorInput.value = '#FFD700';
+    colorInput.style.width = '100%';
     container.appendChild(colorInput);
-
-    // Font selector
-    const fontSelect = document.createElement('select');
-    ['Arial','Verdana','Times New Roman','Courier New','Splatoon1'].forEach(f => {
-      const opt = document.createElement('option');
-      opt.value = f;
-      opt.textContent = f;
-      if (f === (saved.font||'')) opt.selected = true;
-      fontSelect.appendChild(opt);
-    });
-    fontSelect.addEventListener('change', () => { el.style.fontFamily = fontSelect.value; saveText(); });
-    container.appendChild(fontSelect);
 
     // Bold toggle
     const boldBtn = document.createElement('button');
-    boldBtn.textContent = 'B';
-    boldBtn.style.fontWeight = 'bold';
-    boldBtn.style.marginLeft = '5px';
-    boldBtn.addEventListener('click', () => {
-      el.style.fontWeight = el.style.fontWeight==='bold' ? 'normal' : 'bold';
-      saveText();
-    });
+    boldBtn.textContent = 'Bold';
+    boldBtn.style.width = '100%';
+    boldBtn.style.marginTop = '5px';
     container.appendChild(boldBtn);
 
     devContent.appendChild(container);
 
-    function saveText() {
-      localStorage.setItem(keyPrefix, JSON.stringify({
-        text: el.textContent,
-        color: el.style.color,
-        font: el.style.fontFamily,
-        bold: el.style.fontWeight==='bold',
-        left: el.style.left,
-        top: el.style.top
-      }));
-    }
+    input.addEventListener('input', () => {
+      // Save previous state
+      changeHistory.push({
+        type: 'text',
+        el: el,
+        oldValue: {
+          text: el.textContent,
+          color: el.style.color,
+          font: el.style.fontFamily,
+          bold: el.style.fontWeight === 'bold',
+          left: el.style.left,
+          top: el.style.top
+        }
+      });
+      el.textContent = input.value;
+    });
+
+    colorInput.addEventListener('input', () => {
+      changeHistory.push({
+        type: 'text',
+        el: el,
+        oldValue: { color: el.style.color }
+      });
+      el.style.color = colorInput.value;
+    });
+
+    boldBtn.addEventListener('click', () => {
+      changeHistory.push({
+        type: 'text',
+        el: el,
+        oldValue: { bold: el.style.fontWeight === 'bold' }
+      });
+      el.style.fontWeight = el.style.fontWeight === 'bold' ? 'normal' : 'bold';
+    });
   }
 
   function addImageControls(img) {
-    const keyPrefix = `dev_img_${location.pathname}_${Array.from(document.querySelectorAll('img')).indexOf(img)}`;
-    const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
-
-    if (saved.src) img.src = saved.src;
-    if (saved.rotate) img.style.transform = `rotate(${saved.rotate}deg) scale(${saved.scale||1})`;
-    if (saved.opacity) img.style.opacity = saved.opacity || 1;
-    if (saved.left) img.style.position = 'absolute', img.style.left = saved.left, img.style.top = saved.top;
-
-    makeDraggable(img, keyPrefix);
-
     const container = document.createElement('div');
-    container.style.marginBottom = '10px';
 
     // Source input
     const srcInput = document.createElement('input');
     srcInput.type = 'text';
     srcInput.value = img.src;
     srcInput.style.width = '100%';
-    srcInput.style.marginBottom = '2px';
-    srcInput.addEventListener('input', () => { img.src = srcInput.value; saveImg(); });
     container.appendChild(srcInput);
 
-    // Rotate
+    // Rotate input
     const rotateInput = document.createElement('input');
     rotateInput.type = 'number';
-    rotateInput.value = saved.rotate||0;
-    rotateInput.style.width = '48%';
-    rotateInput.style.marginRight = '2%';
-    rotateInput.placeholder = 'Rotate°';
-    rotateInput.addEventListener('input', () => { updateTransform(); saveImg(); });
+    rotateInput.value = 0;
+    rotateInput.placeholder = 'Rotate (deg)';
+    rotateInput.style.width = '100%';
     container.appendChild(rotateInput);
 
-    // Scale
+    // Scale input
     const scaleInput = document.createElement('input');
     scaleInput.type = 'number';
+    scaleInput.value = 1;
     scaleInput.step = 0.1;
-    scaleInput.value = saved.scale||1;
-    scaleInput.style.width = '48%';
     scaleInput.placeholder = 'Scale';
-    scaleInput.addEventListener('input', () => { updateTransform(); saveImg(); });
+    scaleInput.style.width = '100%';
     container.appendChild(scaleInput);
 
-    // Opacity
+    // Opacity input
     const opacityInput = document.createElement('input');
-    opacityInput.type = 'range';
+    opacityInput.type = 'number';
+    opacityInput.value = 1;
+    opacityInput.step = 0.05;
     opacityInput.min = 0;
     opacityInput.max = 1;
-    opacityInput.step = 0.05;
-    opacityInput.value = saved.opacity||1;
-    opacityInput.addEventListener('input', () => { img.style.opacity = opacityInput.value; saveImg(); });
+    opacityInput.placeholder = 'Opacity';
+    opacityInput.style.width = '100%';
     container.appendChild(opacityInput);
 
     devContent.appendChild(container);
 
-    function updateTransform() {
-      img.style.transform = `rotate(${rotateInput.value||0}deg) scale(${scaleInput.value||1})`;
-    }
+    // Listeners
+    srcInput.addEventListener('input', () => {
+      changeHistory.push({
+        type: 'image',
+        el: img,
+        oldValue: { src: img.src }
+      });
+      img.src = srcInput.value;
+    });
 
-    function saveImg() {
-      localStorage.setItem(keyPrefix, JSON.stringify({
-        src: img.src,
-        rotate: rotateInput.value,
-        scale: scaleInput.value,
-        opacity: opacityInput.value,
-        left: img.style.left,
-        top: img.style.top
-      }));
-    }
+    rotateInput.addEventListener('input', () => {
+      changeHistory.push({
+        type: 'image',
+        el: img,
+        oldValue: { rotate: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 0 }
+      });
+      img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
+    });
+
+    scaleInput.addEventListener('input', () => {
+      changeHistory.push({
+        type: 'image',
+        el: img,
+        oldValue: { scale: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 1 }
+      });
+      img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
+    });
+
+    opacityInput.addEventListener('input', () => {
+      changeHistory.push({
+        type: 'image',
+        el: img,
+        oldValue: { opacity: img.style.opacity }
+      });
+      img.style.opacity = opacityInput.value;
+    });
   }
 
-  // ===== Draggable helper =====
-  function makeDraggable(el, keyPrefix) {
-    el.style.cursor = 'move';
-    el.onmousedown = function(e) {
-      e.preventDefault();
-      const offsetX = e.clientX - el.getBoundingClientRect().left;
-      const offsetY = e.clientY - el.getBoundingClientRect().top;
-
-      function move(eMove) {
-        el.style.position = 'absolute';
-        el.style.left = (eMove.clientX - offsetX) + 'px';
-        el.style.top = (eMove.clientY - offsetY) + 'px';
-        localStorage.setItem(keyPrefix, JSON.stringify({
-          ...JSON.parse(localStorage.getItem(keyPrefix)||'{}'),
-          left: el.style.left,
-          top: el.style.top
-        }));
+  /* ===== PANEL ACTIVATION ===== */
+  // Example: unlock panel with Ctrl+Shift+D
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') {
+      if (!sessionStorage.getItem(PANEL_KEY)) {
+        const password = prompt('Enter dev password:');
+        if (password === 'yourpassword') {
+          sessionStorage.setItem(PANEL_KEY, 'true');
+          createDevPanel();
+        }
+      } else {
+        createDevPanel();
       }
-
-      function stop() {
-        document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', stop);
-      }
-
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', stop);
     }
-  }
-}
+  });
+
+})();
 </script>
 
 </body>
