@@ -1,4 +1,4 @@
-<script>
+// Example inside script.js at the very end:
 const loadingScreen = document.querySelector('.loading-screen');
 const loadingBar = document.querySelector('.loading-bar-fill');
 const dots = document.querySelector('.dots');
@@ -34,4 +34,3 @@ function randomFill() {
 
 // Start loading
 randomFill();
-</script>
