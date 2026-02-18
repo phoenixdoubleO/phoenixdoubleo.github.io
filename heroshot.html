@@ -2,31 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hero Shot</title>
+  <title>Hero Shot Replica</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Favicon -->
   <link rel="icon" href="favicon.png" type="image/png">
 </head>
 <body>
 
-  <!-- Back button top-left -->
-  <button id="backButton">Back</button>
+<button id="backButton" onclick="history.back()">Back</button>
 
-  <!-- Carousel container -->
-  <div class="carousel-container">
-  <h1 id="weaponTitle">Loading...</h1>
+<div class="carousel-container">
+  <h1 id="weaponTitle">Hero Shot Replica</h1>
+
   <div class="carousel">
     <button class="arrow left" id="prevBtn">◀</button>
-    <img id="carouselImage" src="image1.png" alt="Hero Shot">
+    <img id="carouselImage" src="image1.png" alt="H-3 Nozzlenose">
     <button class="arrow right" id="nextBtn">▶</button>
   </div>
+
   <button id="checkButton"></button>
 </div>
 
-  <!-- Bouncing yellow line -->
-  <div class="bouncing-line"></div>
+<div class="bouncing-line"></div>
 
-  <!-- Hero Shot JS -->
+<script>
+const weapons = [
+  { src: 'image1.png', name: 'Hero Shot Replica' },
+];
+</script>
+
+<!-- Hero Shot JS -->
   <script>
     // Wrap everything after DOM loads
     document.addEventListener('DOMContentLoaded', () => {
@@ -58,7 +62,7 @@ weapons.forEach(weapon => {
 
       // Back button works
       backButton.addEventListener('click', () => {
-        window.location.href = 'shooters.html'; // Or use location.href = 'shooters.html';
+        window.location.href = 'shooters.html';// Or use location.href = 'shooters.html';
       });
 
       // Checkmark toggle
