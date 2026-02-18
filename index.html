@@ -86,7 +86,7 @@ else devPanel.style.display = 'none';
 // Key combo: Ctrl (Win) / Cmd (Mac) + Shift + Alt + D
 document.addEventListener('keydown', (e) => {
     if (!devUnlocked) {
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.altKey && e.key.toLowerCase() === 'd') {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
             const password = prompt("Enter dev password:");
             if (password === "yourpassword") {
                 devPanel.style.display = 'block';
