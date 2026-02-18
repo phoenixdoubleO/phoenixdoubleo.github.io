@@ -74,336 +74,246 @@
 
 
 <script>
-/* ===== DEV PANEL SCRIPT ===== */
-(() => {
-  const PANEL_KEY = 'devPanelUnlocked'; // sessionStorage key
-  let devPanel, devContent;
-  let changeHistory = [];
+const devContent = document.getElementById('devContent'); // your dev panel container
+const devPanel = document.getElementById('devPanel'); // main panel wrapper
 
-  function createDevPanel() {
-    if (document.getElementById('devPanel')) return; // Prevent multiple panels
+// ===== SESSION CHECK =====
+if (sessionStorage.getItem('devOpen')) {
+  devPanel.style.display = 'block';
+} else {
+  devPanel.style.display = 'none';
+}
 
-    devPanel = document.createElement('div');
-    devPanel.id = 'devPanel';
-    devPanel.style.position = 'fixed';
-    devPanel.style.top = '10px';
-    devPanel.style.right = '10px';
-    devPanel.style.width = '300px';
-    devPanel.style.height = '400px';
-    devPanel.style.backgroundColor = '#1e2228';
-    devPanel.style.color = '#FFD700';
-    devPanel.style.border = '2px solid #FFD700';
-    devPanel.style.zIndex = 9999;
-    devPanel.style.overflowY = 'auto';
-    devPanel.style.padding = '10px';
-    devPanel.style.fontFamily = 'Arial, sans-serif';
-    devPanel.style.boxShadow = '0 0 15px #FFD700';
-
-    // Close button
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = 'X';
-    closeBtn.style.float = 'right';
-    closeBtn.style.background = '#FF5555';
-    closeBtn.style.color = '#FFF';
-    closeBtn.style.border = 'none';
-    closeBtn.style.cursor = 'pointer';
-    closeBtn.style.fontWeight = 'bold';
-    closeBtn.onclick = () => devPanel.remove();
-    devPanel.appendChild(closeBtn);
-
-    // Title
-    const title = document.createElement('h2');
-    title.textContent = 'Dev Panel';
-    title.style.textAlign = 'center';
-    devPanel.appendChild(title);
-
-    // Content container
-    devContent = document.createElement('div');
-    devPanel.appendChild(devContent);
-
-    document.body.appendChild(devPanel);
-
-    // Add main control buttons
-    addExportButton();
-    addRevertButton();
-    addTextButton();
-    addImageButton();
+// ===== PASSWORD OPEN LOGIC =====
+let devUnlocked = sessionStorage.getItem('devOpen') === 'true';
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'D' && !devUnlocked) {
+    const password = prompt("Enter dev password:");
+    if (password === "yourpassword") {
+      devPanel.style.display = 'block';
+      devUnlocked = true;
+      sessionStorage.setItem('devOpen', 'true');
+    }
   }
+});
 
-  /* ===== DEV CONTROLS ===== */
-  function addExportButton() {
-    const exportBtn = document.createElement('button');
-    exportBtn.textContent = 'Export HTML';
-    styleDevButton(exportBtn, '#FFD700', '#000');
-    exportBtn.onclick = () => {
-      const htmlContent = document.documentElement.outerHTML;
-      const newWindow = window.open('', '_blank');
-      newWindow.document.write(`
-        <html>
-          <head>
-            <title>Exported HTML</title>
-            <style>
-              body { background: #2a2f35; color: #FFD700; font-family: Arial, sans-serif; padding: 20px; }
-              textarea { width: 100%; height: 90vh; background: #1e2228; color: #FFD700; font-family: monospace; font-size: 14px; padding: 10px; border: none; }
-            </style>
-          </head>
-          <body>
-            <h1>Copy your HTML below:</h1>
-            <textarea id="exportArea" readonly>${htmlContent.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</textarea>
-            <script>
-              const textarea = document.getElementById('exportArea');
-              textarea.focus();
-              textarea.select();
-            <\/script>
-          </body>
-        </html>
-      `);
-      newWindow.document.close();
-    };
-    devContent.appendChild(exportBtn);
+// ===== CLOSE PANEL =====
+const closeBtn = document.createElement('button');
+closeBtn.textContent = 'X';
+closeBtn.style.position = 'absolute';
+closeBtn.style.top = '5px';
+closeBtn.style.right = '5px';
+closeBtn.style.cursor = 'pointer';
+closeBtn.onclick = () => devPanel.style.display = 'none';
+devPanel.appendChild(closeBtn);
+
+// ===== CHANGE HISTORY =====
+const changeHistory = [];
+
+// ===== SELECTION LOGIC =====
+let selectedElement = null;
+function makeSelectable(el) {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (selectedElement) selectedElement.style.outline = '';
+    selectedElement = el;
+    selectedElement.style.outline = '2px dashed red';
+  });
+}
+
+document.addEventListener('click', () => {
+  if (selectedElement) selectedElement.style.outline = '';
+  selectedElement = null;
+});
+
+// Backspace/Delete removes selected element
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Backspace' || e.key === 'Delete') && selectedElement) {
+    changeHistory.push(selectedElement.outerHTML); // save for revert
+    selectedElement.remove();
+    selectedElement = null;
+    e.preventDefault();
   }
+});
 
-  function addRevertButton() {
-    const revertBtn = document.createElement('button');
-    revertBtn.textContent = 'Revert Last Change';
-    styleDevButton(revertBtn, '#FF5555', '#FFF');
-    revertBtn.onclick = () => {
-      if (changeHistory.length === 0) {
-        alert('No changes to revert!');
-        return;
-      }
-      const lastChange = changeHistory.pop();
+// ===== ADD TEXT =====
+function addTextButton() {
+  const btn = document.createElement('button');
+  btn.textContent = 'Add Text';
+  styleDevButton(btn, '#00AAFF', '#FFF');
+  btn.onclick = () => {
+    const el = document.createElement('div');
+    el.textContent = 'New Text';
+    el.style.position = 'absolute';
+    el.style.left = '50px';
+    el.style.top = '50px';
+    el.style.color = '#FFD700';
+    el.style.fontFamily = "'Splatoon1', Arial, sans-serif";
+    el.style.fontWeight = 'normal';
+    el.style.cursor = 'move';
+    el.style.userSelect = 'none';
+    document.body.appendChild(el);
 
-      if (lastChange.type === 'text') {
-        lastChange.el.textContent = lastChange.oldValue.text;
-        lastChange.el.style.color = lastChange.oldValue.color;
-        lastChange.el.style.fontFamily = lastChange.oldValue.font;
-        lastChange.el.style.fontWeight = lastChange.oldValue.bold ? 'bold' : 'normal';
-        if (lastChange.oldValue.left) {
-          lastChange.el.style.position = 'absolute';
-          lastChange.el.style.left = lastChange.oldValue.left;
-          lastChange.el.style.top = lastChange.oldValue.top;
-        }
-      } else if (lastChange.type === 'image') {
-        lastChange.el.src = lastChange.oldValue.src;
-        lastChange.el.style.transform = `rotate(${lastChange.oldValue.rotate || 0}deg) scale(${lastChange.oldValue.scale || 1})`;
-        lastChange.el.style.opacity = lastChange.oldValue.opacity || 1;
-        if (lastChange.oldValue.left) {
-          lastChange.el.style.position = 'absolute';
-          lastChange.el.style.left = lastChange.oldValue.left;
-          lastChange.el.style.top = lastChange.oldValue.top;
-        }
-      }
-    };
-    devContent.appendChild(revertBtn);
-  }
+    makeDraggable(el);
+    makeSelectable(el);
+    addTextControls(el);
+    changeHistory.push(el.outerHTML);
+  };
+  devContent.appendChild(btn);
+}
 
-  function addTextButton() {
-    const textBtn = document.createElement('button');
-    textBtn.textContent = 'Add Text';
-    styleDevButton(textBtn, '#00AAFF', '#FFF');
+// ===== ADD IMAGE =====
+function addImageButton() {
+  const btn = document.createElement('button');
+  btn.textContent = 'Add Image';
+  styleDevButton(btn, '#AA00FF', '#FFF');
+  btn.onclick = () => {
+    const img = document.createElement('img');
+    img.src = 'placeholder.png';
+    img.style.position = 'absolute';
+    img.style.left = '100px';
+    img.style.top = '100px';
+    img.style.width = '150px';
+    img.style.height = '150px';
+    img.style.cursor = 'move';
+    img.style.userSelect = 'none';
+    img.style.opacity = 1;
+    document.body.appendChild(img);
 
-    textBtn.onclick = () => {
-      const el = document.createElement('div');
-      el.textContent = 'New Text';
-      el.style.position = 'absolute';
-      el.style.left = '50px';
-      el.style.top = '50px';
-      el.style.color = '#FFD700';
-      el.style.fontFamily = 'Arial, sans-serif';
-      el.style.fontWeight = 'normal';
-      el.style.cursor = 'move';
-      document.body.appendChild(el);
+    makeDraggable(img);
+    makeSelectable(img);
+    addImageControls(img);
+    changeHistory.push(img.outerHTML);
+  };
+  devContent.appendChild(btn);
+}
 
-      makeDraggable(el);
-      addTextControls(el);
-    };
+// ===== TEXT CONTROLS =====
+function addTextControls(el) {
+  const container = document.createElement('div');
 
-    devContent.appendChild(textBtn);
-  }
+  // Color picker
+  const colorInput = document.createElement('input');
+  colorInput.type = 'color';
+  colorInput.value = '#FFD700';
+  colorInput.oninput = () => el.style.color = colorInput.value;
+  container.appendChild(colorInput);
 
-  function addImageButton() {
-    const imgBtn = document.createElement('button');
-    imgBtn.textContent = 'Add Image';
-    styleDevButton(imgBtn, '#AA00FF', '#FFF');
+  // Bold toggle
+  const boldBtn = document.createElement('button');
+  boldBtn.textContent = 'B';
+  boldBtn.onclick = () => {
+    el.style.fontWeight = el.style.fontWeight === 'bold' ? 'normal' : 'bold';
+  };
+  container.appendChild(boldBtn);
 
-    imgBtn.onclick = () => {
-      const img = document.createElement('img');
-      img.src = 'placeholder.png';
-      img.style.position = 'absolute';
-      img.style.left = '100px';
-      img.style.top = '100px';
-      img.style.width = '150px';
-      img.style.height = '150px';
-      img.style.cursor = 'move';
-      document.body.appendChild(img);
+  // Font input
+  const fontInput = document.createElement('input');
+  fontInput.type = 'text';
+  fontInput.placeholder = 'Font name';
+  fontInput.oninput = () => el.style.fontFamily = fontInput.value;
+  container.appendChild(fontInput);
 
-      makeDraggable(img);
-      addImageControls(img);
-    };
+  devContent.appendChild(container);
+  container.inputElements = [el];
+}
 
-    devContent.appendChild(imgBtn);
-  }
+// ===== IMAGE CONTROLS =====
+function addImageControls(img) {
+  const container = document.createElement('div');
 
-  function styleDevButton(btn, bg, color) {
-    btn.style.width = '100%';
-    btn.style.marginTop = '10px';
-    btn.style.padding = '8px';
-    btn.style.backgroundColor = bg;
-    btn.style.color = color;
-    btn.style.border = 'none';
-    btn.style.borderRadius = '5px';
-    btn.style.cursor = 'pointer';
-  }
+  // Width slider
+  const widthInput = document.createElement('input');
+  widthInput.type = 'range';
+  widthInput.min = 10;
+  widthInput.max = 800;
+  widthInput.value = 150;
+  widthInput.oninput = () => img.style.width = widthInput.value + 'px';
+  container.appendChild(widthInput);
 
-  function makeDraggable(el) {
-    let offsetX, offsetY;
-    el.addEventListener('mousedown', e => {
-      offsetX = e.clientX - el.offsetLeft;
-      offsetY = e.clientY - el.offsetTop;
-      function move(e) {
-        el.style.left = e.clientX - offsetX + 'px';
-        el.style.top = e.clientY - offsetY + 'px';
-      }
-      function up() {
-        document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', up);
-      }
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
-    });
-  }
+  // Height slider
+  const heightInput = document.createElement('input');
+  heightInput.type = 'range';
+  heightInput.min = 10;
+  heightInput.max = 800;
+  heightInput.value = 150;
+  heightInput.oninput = () => img.style.height = heightInput.value + 'px';
+  container.appendChild(heightInput);
 
-  function addTextControls(el) {
-    const container = document.createElement('div');
+  // Rotation slider
+  const rotateInput = document.createElement('input');
+  rotateInput.type = 'range';
+  rotateInput.min = 0;
+  rotateInput.max = 360;
+  rotateInput.value = 0;
+  rotateInput.oninput = () => img.style.transform = `rotate(${rotateInput.value}deg)`;
+  container.appendChild(rotateInput);
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = el.textContent;
-    input.style.width = '100%';
-    container.appendChild(input);
+  // Opacity slider
+  const opacityInput = document.createElement('input');
+  opacityInput.type = 'range';
+  opacityInput.min = 0;
+  opacityInput.max = 1;
+  opacityInput.step = 0.01;
+  opacityInput.value = 1;
+  opacityInput.oninput = () => img.style.opacity = opacityInput.value;
+  container.appendChild(opacityInput);
 
-    const colorInput = document.createElement('input');
-    colorInput.type = 'color';
-    colorInput.value = '#FFD700';
-    colorInput.style.width = '100%';
-    container.appendChild(colorInput);
+  // Image source input
+  const srcInput = document.createElement('input');
+  srcInput.type = 'text';
+  srcInput.placeholder = 'Image URL';
+  srcInput.onchange = () => img.src = srcInput.value;
+  container.appendChild(srcInput);
 
-    const boldBtn = document.createElement('button');
-    boldBtn.textContent = 'Bold';
-    boldBtn.style.width = '100%';
-    boldBtn.style.marginTop = '5px';
-    container.appendChild(boldBtn);
+  devContent.appendChild(container);
+  container.inputElements = [img];
+}
 
-    devContent.appendChild(container);
-
-    input.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'text',
-        el: el,
-        oldValue: {
-          text: el.textContent,
-          color: el.style.color,
-          font: el.style.fontFamily,
-          bold: el.style.fontWeight === 'bold',
-          left: el.style.left,
-          top: el.style.top
-        }
-      });
-      el.textContent = input.value;
-    });
-
-    colorInput.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'text',
-        el: el,
-        oldValue: { color: el.style.color }
-      });
-      el.style.color = colorInput.value;
-    });
-
-    boldBtn.addEventListener('click', () => {
-      changeHistory.push({
-        type: 'text',
-        el: el,
-        oldValue: { bold: el.style.fontWeight === 'bold' }
-      });
-      el.style.fontWeight = el.style.fontWeight === 'bold' ? 'normal' : 'bold';
-    });
-  }
-
-  function addImageControls(img) {
-    const container = document.createElement('div');
-
-    const srcInput = document.createElement('input');
-    srcInput.type = 'text';
-    srcInput.value = img.src;
-    srcInput.style.width = '100%';
-    container.appendChild(srcInput);
-
-    const rotateInput = document.createElement('input');
-    rotateInput.type = 'number';
-    rotateInput.value = 0;
-    rotateInput.placeholder = 'Rotate (deg)';
-    rotateInput.style.width = '100%';
-    container.appendChild(rotateInput);
-
-    const scaleInput = document.createElement('input');
-    scaleInput.type = 'number';
-    scaleInput.value = 1;
-    scaleInput.step = 0.1;
-    scaleInput.placeholder = 'Scale';
-    scaleInput.style.width = '100%';
-    container.appendChild(scaleInput);
-
-    const opacityInput = document.createElement('input');
-    opacityInput.type = 'number';
-    opacityInput.value = 1;
-    opacityInput.step = 0.05;
-    opacityInput.min = 0;
-    opacityInput.max = 1;
-    opacityInput.placeholder = 'Opacity';
-    opacityInput.style.width = '100%';
-    container.appendChild(opacityInput);
-
-    devContent.appendChild(container);
-
-    srcInput.addEventListener('input', () => {
-      changeHistory.push({ type: 'image', el: img, oldValue: { src: img.src } });
-      img.src = srcInput.value;
-    });
-
-    rotateInput.addEventListener('input', () => {
-      changeHistory.push({ type: 'image', el: img, oldValue: { rotate: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 0 } });
-      img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
-    });
-
-    scaleInput.addEventListener('input', () => {
-      changeHistory.push({ type: 'image', el: img, oldValue: { scale: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 1 } });
-      img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
-    });
-
-    opacityInput.addEventListener('input', () => {
-      changeHistory.push({ type: 'image', el: img, oldValue: { opacity: img.style.opacity } });
-      img.style.opacity = opacityInput.value;
-    });
-  }
-
-  /* ===== PANEL ACTIVATION ===== */
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') {
-      if (!sessionStorage.getItem(PANEL_KEY)) {
-        const password = prompt('Enter dev password:');
-        if (password === 'yourpassword') {
-          sessionStorage.setItem(PANEL_KEY, 'true');
-          createDevPanel(); // Panel opens now
-        }
-      } else {
-        createDevPanel(); // Already unlocked: panel opens
-      }
+// ===== DRAGGABLE ELEMENTS =====
+function makeDraggable(el) {
+  let offsetX, offsetY, isDragging = false;
+  el.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - el.getBoundingClientRect().left;
+    offsetY = e.clientY - el.getBoundingClientRect().top;
+    el.style.zIndex = 999;
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      el.style.left = (e.clientX - offsetX) + 'px';
+      el.style.top = (e.clientY - offsetY) + 'px';
     }
   });
-})();
+  document.addEventListener('mouseup', () => isDragging = false);
+}
+
+// ===== DEV BUTTON STYLE HELPER =====
+function styleDevButton(btn, bg, color) {
+  btn.style.margin = '5px';
+  btn.style.padding = '5px 10px';
+  btn.style.backgroundColor = bg;
+  btn.style.color = color;
+  btn.style.border = 'none';
+  btn.style.cursor = 'pointer';
+  btn.style.borderRadius = '5px';
+}
+
+// ===== REVERT LAST CHANGE =====
+const revertBtn = document.createElement('button');
+revertBtn.textContent = 'Revert Last Change';
+revertBtn.onclick = () => {
+  if (changeHistory.length === 0) return alert('No changes to revert');
+  const last = changeHistory.pop();
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = last;
+  document.body.appendChild(tempDiv.firstChild);
+};
+devContent.appendChild(revertBtn);
+
+// ===== INITIALIZE =====
+addTextButton();
+addImageButton();
 </script>
 
 </body>
