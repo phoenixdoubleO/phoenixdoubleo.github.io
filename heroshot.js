@@ -1,89 +1,92 @@
-document.addEventListener("DOMContentLoaded", () => {
-  if (!window.weapons || !Array.isArray(window.weapons)) {
-    console.warn("No weapons array found on this page.");
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.weapons) {
+    console.warn('No weapons array found');
     return;
   }
 
-  const img = document.getElementById("carouselImage");
-  const title = document.getElementById("weaponTitle");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const checkBtn = document.getElementById("checkButton");
+  const backButton = document.getElementById('backButton');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const imageElement = document.getElementById('carouselImage');
+  const titleElement = document.getElementById('weaponTitle');
+  const checkButton = document.getElementById('checkButton');
 
-  if (!img || !title || !prevBtn || !nextBtn || !checkBtn) {
-    console.warn("Missing carousel elements.");
+  if (!prevBtn || !nextBtn || !imageElement || !titleElement || !checkButton) {
+    console.warn('Missing required elements');
     return;
   }
 
-  let index = 0;
-  const pageKey = location.pathname;
+  const checkmarkImage = 'checkmark.png';
+  let currentIndex = 0;
 
-  /* ---------- LOAD SAVED STATE ---------- */
-  const savedIndex = localStorage.getItem(pageKey + ":index");
-  if (savedIndex !== null) index = Number(savedIndex);
-
-  const savedCheck = localStorage.getItem(pageKey + ":checked") === "true";
-  if (savedCheck) {
-    checkBtn.style.backgroundImage = "url('checkmark.png')";
+  function getWeaponKey() {
+    return `checked-${weapons[currentIndex].name}`;
   }
 
-  /* ---------- FUNCTIONS ---------- */
-  function updateCarousel() {
-    img.style.opacity = "0";
+  function updateCheckButton() {
+    const key = getWeaponKey();
+    const isChecked = localStorage.getItem(key) === 'true';
+    checkButton.style.backgroundImage = isChecked
+      ? `url('${checkmarkImage}')`
+      : '';
+  }
+
+  function setImage(index) {
+    const weapon = weapons[index];
+    imageElement.style.opacity = 0;
 
     setTimeout(() => {
-      img.src = weapons[index].src;
-      title.textContent = weapons[index].name;
-      img.style.opacity = "1";
+      imageElement.src = weapon.src;
+      titleElement.textContent = weapon.name;
+      imageElement.style.opacity = 1;
 
-      prevBtn.classList.toggle("disabled", index === 0);
-      nextBtn.classList.toggle("disabled", index === weapons.length - 1);
+      prevBtn.classList.toggle('disabled', index === 0);
+      nextBtn.classList.toggle('disabled', index === weapons.length - 1);
 
-      localStorage.setItem(pageKey + ":index", index);
-    }, 150);
+      updateCheckButton();
+    }, 200);
   }
 
-  function toggleCheck() {
-    const checked = localStorage.getItem(pageKey + ":checked") === "true";
-    localStorage.setItem(pageKey + ":checked", (!checked).toString());
-
-    checkBtn.style.backgroundImage = checked
-      ? "none"
-      : "url('checkmark.png')";
-
-    checkBtn.classList.add("pop");
-    setTimeout(() => checkBtn.classList.remove("pop"), 250);
+  // Back button
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      history.back();
+    });
   }
 
-  /* ---------- EVENTS ---------- */
-  prevBtn.onclick = () => {
-    if (index > 0) {
-      index--;
-      updateCarousel();
-    }
-  };
+  // Checkbox
+  checkButton.addEventListener('click', () => {
+    const key = getWeaponKey();
+    const isChecked = localStorage.getItem(key) === 'true';
+    localStorage.setItem(key, isChecked ? 'false' : 'true');
 
-  nextBtn.onclick = () => {
-    if (index < weapons.length - 1) {
-      index++;
-      updateCarousel();
-    }
-  };
+    checkButton.classList.add('pop');
+    setTimeout(() => checkButton.classList.remove('pop'), 300);
 
-  checkBtn.onclick = toggleCheck;
+    updateCheckButton();
+  });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" && index > 0) {
-      index--;
-      updateCarousel();
-    }
-    if (e.key === "ArrowRight" && index < weapons.length - 1) {
-      index++;
-      updateCarousel();
+  // Arrows
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      setImage(currentIndex);
     }
   });
 
-  /* ---------- INIT ---------- */
-  img.style.transition = "opacity 0.25s ease";
-  updateCarousel();
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < weapons.length - 1) {
+      currentIndex++;
+      setImage(currentIndex);
+    }
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+  });
+
+  imageElement.style.transition = 'opacity 0.3s ease';
+  setImage(currentIndex);
 });
