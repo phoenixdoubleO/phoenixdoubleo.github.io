@@ -74,28 +74,28 @@
 
 
 <script>
-// ===== DEV PANEL ELEMENTS =====
-const devPanel = document.getElementById('devPanel'); // your dev panel container
-const devContent = document.getElementById('devContent'); // panel content container
+// ===== DEV PANEL =====
+const devPanel = document.getElementById('devPanel');
+const devContent = document.getElementById('devContent');
 
-// ===== SESSION CHECK =====
+// Session check
 let devUnlocked = sessionStorage.getItem('devOpen') === 'true';
 if (devUnlocked) devPanel.style.display = 'block';
 else devPanel.style.display = 'none';
 
-// ===== KEYBIND OPEN =====
+// Key combo: Ctrl (Win) / Cmd (Mac) + Shift + Alt + D
 document.addEventListener('keydown', (e) => {
-  if (!devUnlocked) {
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.altKey && e.key.toLowerCase() === 'd') {
-      const password = prompt("Enter dev password:");
-      if (password === "yourpassword") {
-        devPanel.style.display = 'block';
-        devUnlocked = true;
-        sessionStorage.setItem('devOpen', 'true');
-      }
+    if (!devUnlocked) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.altKey && e.key.toLowerCase() === 'd') {
+            const password = prompt("Enter dev password:");
+            if (password === "yourpassword") {
+                devPanel.style.display = 'block';
+                devUnlocked = true;
+                sessionStorage.setItem('devOpen', 'true');
+            }
+        }
     }
-  }
-})
+});
 
 // ===== CLOSE BUTTON =====
 const closeBtn = document.createElement('button');
