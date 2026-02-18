@@ -79,7 +79,7 @@ let devUnlocked = false;
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && e.shiftKey && e.key === 'D' && !devUnlocked) {
     const password = prompt("Enter dev password:");
-    if (password === "SuperSecret123") { // change this
+    if (password === "YO") { // change this
       devUnlocked = true;
       showDevPanel();
     } else {
