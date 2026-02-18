@@ -71,5 +71,73 @@
     }, 30); // 30ms per step = ~3 seconds total
   </script>
 
+
+<!-- Dev mode script -->
+<script>
+let devUnlocked = false;
+
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.shiftKey && e.key === 'D' && !devUnlocked) {
+    const password = prompt("Enter dev password:");
+    if (password === "SuperSecret123") { // change this
+      devUnlocked = true;
+      showDevPanel();
+    } else {
+      alert("Wrong password!");
+    }
+  }
+});
+
+function showDevPanel() {
+  const panel = document.createElement('div');
+  panel.id = "devPanel";
+  panel.style.position = "fixed";
+  panel.style.top = "10px";
+  panel.style.right = "10px";
+  panel.style.width = "350px";
+  panel.style.height = "80vh";
+  panel.style.backgroundColor = "rgba(0,0,0,0.95)";
+  panel.style.color = "#FFD700";
+  panel.style.zIndex = 9999;
+  panel.style.overflowY = "auto";
+  panel.style.padding = "20px";
+  panel.style.border = "3px solid #FFD700";
+  panel.style.borderRadius = "10px";
+
+  panel.innerHTML = `
+    <h2>Dev Mode</h2>
+    <p>Edit elements on the page:</p>
+    <div id="devContent"></div>
+    <button onclick="document.body.removeChild(document.getElementById('devPanel'));">Close</button>
+  `;
+
+  document.body.appendChild(panel);
+
+  // Editable text
+  const devContent = document.getElementById('devContent');
+
+  document.querySelectorAll('h1, h2, h3, p').forEach((el, i) => {
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = el.textContent;
+    input.style.width = "100%";
+    input.style.marginBottom = "5px";
+    input.addEventListener('input', () => el.textContent = input.value);
+    devContent.appendChild(input);
+  });
+
+  // Editable images
+  document.querySelectorAll('img').forEach((img, i) => {
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = img.src;
+    input.style.width = "100%";
+    input.style.marginBottom = "5px";
+    input.addEventListener('input', () => img.src = input.value);
+    devContent.appendChild(input);
+  });
+}
+</script>
+
 </body>
 </html>
