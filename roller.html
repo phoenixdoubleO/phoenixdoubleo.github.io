@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rollers</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+
+  <!-- Back button -->
+  <button id="backButton">Back</button>
+
+  <!-- Carousel container -->
+  <div class="carousel-container">
+    <h1 id="weaponTitle">Roller Weapons</h1>
+
+    <div class="carousel">
+      <button class="arrow left" id="prevBtn">◀</button>
+      <img id="carouselImage" src="RollerButtons/Roller1.png" alt="Splat Roller">
+      <button class="arrow right" id="nextBtn">▶</button>
+    </div>
+
+    <button id="checkButton"></button>
+  </div>
+
+  <div class="bouncing-line"></div>
+
+  <!-- Weapons array -->
+  <script>
+    const weapons = [
+      { src: 'RollerButtons/Roller1.png', name: 'Splat Roller' },
+      { src: 'RollerButtons/Roller2.png', name: 'Carbon Roller' },
+      { src: 'RollerButtons/Roller3.png', name: 'Gold Dynamo Roller' },
+      { src: 'RollerButtons/Roller4.png', name: 'Dynamo Roller' },
+      { src: 'RollerButtons/Roller5.png', name: 'Inkbrush Roller' }
+    ];
+  </script>
+
+  <!-- Hero Shot JS -->
+  <script src="./heroshot.js"></script>
+</body>
+</html>
