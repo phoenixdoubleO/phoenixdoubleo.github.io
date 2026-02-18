@@ -1,3 +1,5 @@
+alert("heroshot.js LOADED");
+
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.weapons) {
     console.warn('No weapons array found');
