@@ -86,8 +86,7 @@ else devPanel.style.display = 'none';
 // ===== KEYBIND OPEN =====
 document.addEventListener('keydown', (e) => {
   if (!devUnlocked) {
-    // Ctrl + Shift + Alt + D
-    if (e.ctrlKey && e.shiftKey && e.altKey && e.key.toLowerCase() === 'd') {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.altKey && e.key.toLowerCase() === 'd') {
       const password = prompt("Enter dev password:");
       if (password === "yourpassword") {
         devPanel.style.display = 'block';
@@ -96,7 +95,7 @@ document.addEventListener('keydown', (e) => {
       }
     }
   }
-});
+})
 
 // ===== CLOSE BUTTON =====
 const closeBtn = document.createElement('button');
