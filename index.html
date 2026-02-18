@@ -77,13 +77,11 @@
 /* ===== DEV PANEL SCRIPT ===== */
 (() => {
   const PANEL_KEY = 'devPanelUnlocked'; // sessionStorage key
-
   let devPanel, devContent;
   let changeHistory = [];
 
   function createDevPanel() {
-    // Prevent multiple panels
-    if (document.getElementById('devPanel')) return;
+    if (document.getElementById('devPanel')) return; // Prevent multiple panels
 
     devPanel = document.createElement('div');
     devPanel.id = 'devPanel';
@@ -110,9 +108,7 @@
     closeBtn.style.border = 'none';
     closeBtn.style.cursor = 'pointer';
     closeBtn.style.fontWeight = 'bold';
-    closeBtn.onclick = () => {
-      devPanel.remove();
-    };
+    closeBtn.onclick = () => devPanel.remove();
     devPanel.appendChild(closeBtn);
 
     // Title
@@ -135,7 +131,6 @@
   }
 
   /* ===== DEV CONTROLS ===== */
-
   function addExportButton() {
     const exportBtn = document.createElement('button');
     exportBtn.textContent = 'Export HTML';
@@ -220,10 +215,7 @@
       el.style.cursor = 'move';
       document.body.appendChild(el);
 
-      // Make draggable
       makeDraggable(el);
-
-      // Text editing controls
       addTextControls(el);
     };
 
@@ -252,8 +244,6 @@
 
     devContent.appendChild(imgBtn);
   }
-
-  /* ===== HELPERS ===== */
 
   function styleDevButton(btn, bg, color) {
     btn.style.width = '100%';
@@ -287,21 +277,18 @@
   function addTextControls(el) {
     const container = document.createElement('div');
 
-    // Text input
     const input = document.createElement('input');
     input.type = 'text';
     input.value = el.textContent;
     input.style.width = '100%';
     container.appendChild(input);
 
-    // Color picker
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
     colorInput.value = '#FFD700';
     colorInput.style.width = '100%';
     container.appendChild(colorInput);
 
-    // Bold toggle
     const boldBtn = document.createElement('button');
     boldBtn.textContent = 'Bold';
     boldBtn.style.width = '100%';
@@ -311,7 +298,6 @@
     devContent.appendChild(container);
 
     input.addEventListener('input', () => {
-      // Save previous state
       changeHistory.push({
         type: 'text',
         el: el,
@@ -349,14 +335,12 @@
   function addImageControls(img) {
     const container = document.createElement('div');
 
-    // Source input
     const srcInput = document.createElement('input');
     srcInput.type = 'text';
     srcInput.value = img.src;
     srcInput.style.width = '100%';
     container.appendChild(srcInput);
 
-    // Rotate input
     const rotateInput = document.createElement('input');
     rotateInput.type = 'number';
     rotateInput.value = 0;
@@ -364,7 +348,6 @@
     rotateInput.style.width = '100%';
     container.appendChild(rotateInput);
 
-    // Scale input
     const scaleInput = document.createElement('input');
     scaleInput.type = 'number';
     scaleInput.value = 1;
@@ -373,7 +356,6 @@
     scaleInput.style.width = '100%';
     container.appendChild(scaleInput);
 
-    // Opacity input
     const opacityInput = document.createElement('input');
     opacityInput.type = 'number';
     opacityInput.value = 1;
@@ -386,60 +368,41 @@
 
     devContent.appendChild(container);
 
-    // Listeners
     srcInput.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'image',
-        el: img,
-        oldValue: { src: img.src }
-      });
+      changeHistory.push({ type: 'image', el: img, oldValue: { src: img.src } });
       img.src = srcInput.value;
     });
 
     rotateInput.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'image',
-        el: img,
-        oldValue: { rotate: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 0 }
-      });
+      changeHistory.push({ type: 'image', el: img, oldValue: { rotate: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 0 } });
       img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
     });
 
     scaleInput.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'image',
-        el: img,
-        oldValue: { scale: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 1 }
-      });
+      changeHistory.push({ type: 'image', el: img, oldValue: { scale: parseFloat(img.style.transform.replace(/[^-?\d.]/g, '')) || 1 } });
       img.style.transform = `rotate(${rotateInput.value}deg) scale(${scaleInput.value})`;
     });
 
     opacityInput.addEventListener('input', () => {
-      changeHistory.push({
-        type: 'image',
-        el: img,
-        oldValue: { opacity: img.style.opacity }
-      });
+      changeHistory.push({ type: 'image', el: img, oldValue: { opacity: img.style.opacity } });
       img.style.opacity = opacityInput.value;
     });
   }
 
   /* ===== PANEL ACTIVATION ===== */
-  // Example: unlock panel with Ctrl+Shift+D
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') {
       if (!sessionStorage.getItem(PANEL_KEY)) {
         const password = prompt('Enter dev password:');
         if (password === 'yourpassword') {
           sessionStorage.setItem(PANEL_KEY, 'true');
-          createDevPanel();
+          createDevPanel(); // Panel opens now
         }
       } else {
-        createDevPanel();
+        createDevPanel(); // Already unlocked: panel opens
       }
     }
   });
-
 })();
 </script>
 
