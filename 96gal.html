@@ -8,30 +8,30 @@
 </head>
 <body>
 
-  <button id="backButton" onclick="history.back()">Back</button>
+<button id="backButton" onclick="history.back()">Back</button>
 
-  <div class="carousel-container">
-    <h1 id="weaponTitle">.96 Gal</h1>
+<div class="carousel-container">
+  <h1 id="weaponTitle">.96 Gal</h1>
 
-    <div class="carousel">
-      <button class="arrow left" id="prevBtn">◀</button>
-      <img id="carouselImage" src="96G.png" alt=".96 Gal">
-      <button class="arrow right" id="nextBtn">▶</button>
-    </div>
-
-    <button id="checkButton"></button>
+  <div class="carousel">
+    <button class="arrow left" id="prevBtn">◀</button>
+    <img id="carouselImage" src="AllShooters/96G.png" alt=".96 Gal">
+    <button class="arrow right" id="nextBtn">▶</button>
   </div>
 
-  <div class="bouncing-line"></div>
+  <button id="checkButton"></button>
+</div>
 
-  <script>
-    const weapons = [
-      { src: '96G.png', name: '.96 Gal' },
-      { src: '96GD.png', name: '.96 Gal Deco' },
-      { src: 'C96G.png', name: 'Clawz .96 Gal' }
-    ];
-  </script>
+<div class="bouncing-line"></div>
 
-  <script src="heroshot.js"></script>
+<script>
+const weapons = [
+  { src: 'AllShooters/96G.png', name: '.96 Gal' },
+  { src: 'AllShooters/96GD.png', name: '.96 Gal Deco' },
+  { src: 'AllShooters/C96G.png', name: 'Clawz .96 Gal' }
+];
+</script>
+
+<script src="heroshot.js"></script>
 </body>
 </html>

@@ -8,29 +8,29 @@
 </head>
 <body>
 
-  <button id="backButton" onclick="history.back()">Back</button>
+<button id="backButton" onclick="history.back()">Back</button>
 
-  <div class="carousel-container">
-    <h1 id="weaponTitle">Squeezer</h1>
+<div class="carousel-container">
+  <h1 id="weaponTitle">Squeezer</h1>
 
-    <div class="carousel">
-      <button class="arrow left" id="prevBtn">◀</button>
-      <img id="carouselImage" src="SZ.png" alt="Squeezer">
-      <button class="arrow right" id="nextBtn">▶</button>
-    </div>
-
-    <button id="checkButton"></button>
+  <div class="carousel">
+    <button class="arrow left" id="prevBtn">◀</button>
+    <img id="carouselImage" src="AllShooters/SZ.png" alt="Squeezer">
+    <button class="arrow right" id="nextBtn">▶</button>
   </div>
 
-  <div class="bouncing-line"></div>
+  <button id="checkButton"></button>
+</div>
 
-  <script>
-    const weapons = [
-      { src: 'SZ.png', name: 'Squeezer' },
-      { src: 'FSZ.png', name: 'Foil Squeezer' }
-    ];
-  </script>
+<div class="bouncing-line"></div>
 
-  <script src="heroshot.js"></script>
+<script>
+const weapons = [
+  { src: 'AllShooters/SZ.png', name: 'Squeezer' },
+  { src: 'AllShooters/FSZ.png', name: 'Foil Squeezer' }
+];
+</script>
+
+<script src="heroshot.js"></script>
 </body>
 </html>
