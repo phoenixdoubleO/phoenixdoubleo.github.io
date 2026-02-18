@@ -73,30 +73,26 @@
   </script>
 
 
-<!-- Dev mode script -->
-<!-- Dev Mode Script -->
-<!-- Dev Mode Script -->
+<!-- ===== DEV PANEL SCRIPT ===== -->
 <script>
 let devUnlocked = false;
 let devPanelOpen = false;
 
-// Check if already unlocked in this session
+// Remember unlocked in session
 if (sessionStorage.getItem('devUnlocked') === 'true') devUnlocked = true;
 
 document.addEventListener('keydown', (e) => {
-  // Ctrl + Shift + D to toggle dev mode
-  if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+  if (e.ctrlKey && e.shiftKey && e.key === 'D') { // Ctrl+Shift+D
     if (!devUnlocked) {
-      const password = prompt("Enter dev password:");
-      if (password === "SuperSecret123") { // change to your password
+      const password = prompt("Enter dev password. NOW:");
+      if (password === "PTJBIIMA") { // change your password
         devUnlocked = true;
         sessionStorage.setItem('devUnlocked', 'true');
         showDevPanel();
       } else {
-        alert("Wrong password!");
+        alert("Wrong password! Go away!!");
       }
     } else {
-      // Already unlocked, just toggle panel
       if (!devPanelOpen) showDevPanel();
     }
   }
@@ -106,7 +102,6 @@ function showDevPanel() {
   if (devPanelOpen) return;
   devPanelOpen = true;
 
-  // Create panel
   const panel = document.createElement('div');
   panel.id = "devPanel";
   panel.style.position = "fixed";
@@ -147,11 +142,19 @@ function showDevPanel() {
       border-radius:5px;
       cursor:pointer;
     ">Add Text Box</button>
+    <button id="addImage" style="
+      width:100%;
+      padding:6px;
+      margin-bottom:10px;
+      background:#FFD700;
+      color:#000;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+    ">Add Image</button>
     <div id="devContent"></div>
   `;
   document.body.appendChild(panel);
-
-  devPanelOpen = true;
 
   const devContent = document.getElementById('devContent');
 
@@ -161,80 +164,32 @@ function showDevPanel() {
     devPanelOpen = false;
   });
 
-  // Add new editable text box
+  // Add Text Box
   document.getElementById('addTextBox').addEventListener('click', () => {
     const newText = document.createElement('p');
     newText.textContent = "New Text";
     newText.style.color = "#FFD700";
     document.body.appendChild(newText);
-
-    const key = `dev_text_${location.pathname}_${Date.now()}`;
-    localStorage.setItem(key, newText.textContent);
-
-    // Add input in dev panel
-    const input = document.createElement('input');
-    input.type = "text";
-    input.value = newText.textContent;
-    input.style.width = "100%";
-    input.style.marginBottom = "5px";
-    input.addEventListener('input', () => {
-      newText.textContent = input.value;
-      localStorage.setItem(key, input.value);
-    });
-    devContent.appendChild(input);
+    addTextControls(newText);
   });
 
-  // Editable text (h1, h2, h3, p)
-  document.querySelectorAll('h1, h2, h3, p').forEach((el, i) => {
-    const key = `dev_text_${location.pathname}_${i}`;
-    if (localStorage.getItem(key)) el.textContent = localStorage.getItem(key);
-
-    const input = document.createElement('input');
-    input.type = "text";
-    input.value = el.textContent;
-    input.style.width = "100%";
-    input.style.marginBottom = "5px";
-    input.addEventListener('input', () => {
-      el.textContent = input.value;
-      localStorage.setItem(key, input.value);
-    });
-    devContent.appendChild(input);
+  // Add Image
+  document.getElementById('addImage').addEventListener('click', () => {
+    const url = prompt("Enter image URL or relative path:");
+    if (!url) return;
+    const newImg = document.createElement('img');
+    newImg.src = url;
+    newImg.style.maxWidth = "300px";
+    newImg.style.display = "block";
+    newImg.style.marginBottom = "10px";
+    document.body.appendChild(newImg);
+    addImageControls(newImg);
   });
 
-  // Editable images
-  document.querySelectorAll('img').forEach((img, i) => {
-    const key = `dev_img_${location.pathname}_${i}`;
-    if (localStorage.getItem(key)) img.src = localStorage.getItem(key);
-
-    const input = document.createElement('input');
-    input.type = "text";
-    input.value = img.src;
-    input.style.width = "100%";
-    input.style.marginBottom = "5px";
-    input.addEventListener('input', () => {
-      img.src = input.value;
-      localStorage.setItem(key, input.value);
-    });
-    devContent.appendChild(input);
-  });
-
-  // Editable button links
-  document.querySelectorAll('button[onclick]').forEach((btn, i) => {
-    const key = `dev_btn_${location.pathname}_${i}`;
-    const onclick = btn.getAttribute('onclick');
-    if (localStorage.getItem(key)) btn.setAttribute('onclick', localStorage.getItem(key));
-
-    const input = document.createElement('input');
-    input.type = "text";
-    input.value = onclick;
-    input.style.width = "100%";
-    input.style.marginBottom = "5px";
-    input.addEventListener('input', () => {
-      btn.setAttribute('onclick', input.value);
-      localStorage.setItem(key, input.value);
-    });
-    devContent.appendChild(input);
-  });
+  // Initialize existing text elements
+  document.querySelectorAll('h1, h2, h3, p').forEach(el => addTextControls(el));
+  // Initialize existing images
+  document.querySelectorAll('img').forEach(img => addImageControls(img));
 
   // Export HTML button
   const exportBtn = document.createElement('button');
@@ -255,8 +210,146 @@ function showDevPanel() {
     link.click();
   };
   devContent.appendChild(exportBtn);
+
+  // ======== Helper Functions ========
+  function addTextControls(el) {
+    const keyPrefix = `dev_text_${location.pathname}_${Array.from(document.querySelectorAll('h1,h2,h3,p')).indexOf(el)}`;
+    const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
+    if (saved.text) el.textContent = saved.text;
+    if (saved.color) el.style.color = saved.color;
+    if (saved.font) el.style.fontFamily = saved.font;
+    if (saved.bold) el.style.fontWeight = saved.bold ? 'bold' : 'normal';
+
+    const container = document.createElement('div');
+    container.style.marginBottom = '10px';
+
+    // Text input
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = el.textContent;
+    input.style.width = '100%';
+    input.style.marginBottom = '2px';
+    input.addEventListener('input', () => {
+      el.textContent = input.value;
+      saveText();
+    });
+    container.appendChild(input);
+
+    // Color picker
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.value = saved.color || '#FFD700';
+    colorInput.addEventListener('input', () => {
+      el.style.color = colorInput.value;
+      saveText();
+    });
+    container.appendChild(colorInput);
+
+    // Font selector
+    const fontSelect = document.createElement('select');
+    ['Arial','Verdana','Times New Roman','Courier New','Splatoon1'].forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = f;
+      if (f === (saved.font||'')) opt.selected = true;
+      fontSelect.appendChild(opt);
+    });
+    fontSelect.addEventListener('change', () => {
+      el.style.fontFamily = fontSelect.value;
+      saveText();
+    });
+    container.appendChild(fontSelect);
+
+    // Bold toggle
+    const boldBtn = document.createElement('button');
+    boldBtn.textContent = 'B';
+    boldBtn.style.fontWeight = 'bold';
+    boldBtn.style.marginLeft = '5px';
+    boldBtn.addEventListener('click', () => {
+      el.style.fontWeight = el.style.fontWeight==='bold' ? 'normal' : 'bold';
+      saveText();
+    });
+    container.appendChild(boldBtn);
+
+    devContent.appendChild(container);
+
+    function saveText() {
+      localStorage.setItem(keyPrefix, JSON.stringify({
+        text: el.textContent,
+        color: el.style.color,
+        font: el.style.fontFamily,
+        bold: el.style.fontWeight==='bold'
+      }));
+    }
+  }
+
+  function addImageControls(img) {
+    const keyPrefix = `dev_img_${location.pathname}_${Array.from(document.querySelectorAll('img')).indexOf(img)}`;
+    const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
+    if (saved.src) img.src = saved.src;
+    if (saved.rotate) img.style.transform = `rotate(${saved.rotate}deg) scale(${saved.scale||1})`;
+    if (saved.opacity) img.style.opacity = saved.opacity || 1;
+
+    const container = document.createElement('div');
+    container.style.marginBottom = '10px';
+
+    // Source input
+    const srcInput = document.createElement('input');
+    srcInput.type = 'text';
+    srcInput.value = img.src;
+    srcInput.style.width = '100%';
+    srcInput.style.marginBottom = '2px';
+    srcInput.addEventListener('input', () => { img.src = srcInput.value; saveImg(); });
+    container.appendChild(srcInput);
+
+    // Rotate input
+    const rotateInput = document.createElement('input');
+    rotateInput.type = 'number';
+    rotateInput.value = saved.rotate||0;
+    rotateInput.style.width = '48%';
+    rotateInput.style.marginRight = '2%';
+    rotateInput.placeholder = 'Rotate°';
+    rotateInput.addEventListener('input', () => { updateTransform(); saveImg(); });
+    container.appendChild(rotateInput);
+
+    // Scale input
+    const scaleInput = document.createElement('input');
+    scaleInput.type = 'number';
+    scaleInput.step = 0.1;
+    scaleInput.value = saved.scale||1;
+    scaleInput.style.width = '48%';
+    scaleInput.placeholder = 'Scale';
+    scaleInput.addEventListener('input', () => { updateTransform(); saveImg(); });
+    container.appendChild(scaleInput);
+
+    // Opacity slider
+    const opacityInput = document.createElement('input');
+    opacityInput.type = 'range';
+    opacityInput.min = 0;
+    opacityInput.max = 1;
+    opacityInput.step = 0.05;
+    opacityInput.value = saved.opacity||1;
+    opacityInput.addEventListener('input', () => { img.style.opacity = opacityInput.value; saveImg(); });
+    container.appendChild(opacityInput);
+
+    devContent.appendChild(container);
+
+    function updateTransform() {
+      img.style.transform = `rotate(${rotateInput.value||0}deg) scale(${scaleInput.value||1})`;
+    }
+
+    function saveImg() {
+      localStorage.setItem(keyPrefix, JSON.stringify({
+        src: img.src,
+        rotate: rotateInput.value,
+        scale: scaleInput.value,
+        opacity: opacityInput.value
+      }));
+    }
+  }
 }
 </script>
+
 
 </body>
 </html>
