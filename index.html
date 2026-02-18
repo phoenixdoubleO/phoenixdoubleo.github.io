@@ -84,15 +84,21 @@ if (sessionStorage.getItem('devOpen')) {
   devPanel.style.display = 'none';
 }
 
-// ===== PASSWORD OPEN LOGIC =====
+// ===== DEV PANEL KEYBIND =====
 let devUnlocked = sessionStorage.getItem('devOpen') === 'true';
+const devPanel = document.getElementById('devPanel');
+
 document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key === 'D' && !devUnlocked) {
-    const password = prompt("Enter dev password:");
-    if (password === "yourpassword") {
-      devPanel.style.display = 'block';
-      devUnlocked = true;
-      sessionStorage.setItem('devOpen', 'true');
+  // Only trigger if not already unlocked
+  if (!devUnlocked) {
+    // Example combo: Ctrl + Shift + D
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+      const password = prompt("Enter dev password:");
+      if (password === "yourpassword") {
+        devPanel.style.display = 'block';
+        devUnlocked = true;
+        sessionStorage.setItem('devOpen', 'true');
+      }
     }
   }
 });
