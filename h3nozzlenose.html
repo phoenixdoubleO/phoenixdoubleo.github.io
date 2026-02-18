@@ -45,6 +45,13 @@ const weapons = [
       const checkmarkImage = 'checkmark.png';
       let currentIndex = 0;
 
+      // Preload all weapon images
+weapons.forEach(weapon => {
+  const img = new Image();
+  img.src = weapon.src;
+});
+
+
       function getWeaponKey() {
         return `checked-${weapons[currentIndex].name}`;
       }
