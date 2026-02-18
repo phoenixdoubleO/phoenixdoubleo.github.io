@@ -84,13 +84,13 @@ if (sessionStorage.getItem('devUnlocked') === 'true') devUnlocked = true;
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && e.shiftKey && e.key === 'D') { // Ctrl+Shift+D
     if (!devUnlocked) {
-      const password = prompt("Enter dev password. NOW:");
-      if (password === "PTJBIIMA") { // change your password
+      const password = prompt("Enter dev password:");
+      if (password === "SuperSecret123") { // change your password
         devUnlocked = true;
         sessionStorage.setItem('devUnlocked', 'true');
         showDevPanel();
       } else {
-        alert("Wrong password! Go away!!");
+        alert("Wrong password!");
       }
     } else {
       if (!devPanelOpen) showDevPanel();
@@ -215,10 +215,14 @@ function showDevPanel() {
   function addTextControls(el) {
     const keyPrefix = `dev_text_${location.pathname}_${Array.from(document.querySelectorAll('h1,h2,h3,p')).indexOf(el)}`;
     const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
+
     if (saved.text) el.textContent = saved.text;
     if (saved.color) el.style.color = saved.color;
     if (saved.font) el.style.fontFamily = saved.font;
     if (saved.bold) el.style.fontWeight = saved.bold ? 'bold' : 'normal';
+    if (saved.left) el.style.position = 'absolute', el.style.left = saved.left, el.style.top = saved.top;
+
+    makeDraggable(el, keyPrefix);
 
     const container = document.createElement('div');
     container.style.marginBottom = '10px';
@@ -239,10 +243,7 @@ function showDevPanel() {
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
     colorInput.value = saved.color || '#FFD700';
-    colorInput.addEventListener('input', () => {
-      el.style.color = colorInput.value;
-      saveText();
-    });
+    colorInput.addEventListener('input', () => { el.style.color = colorInput.value; saveText(); });
     container.appendChild(colorInput);
 
     // Font selector
@@ -254,10 +255,7 @@ function showDevPanel() {
       if (f === (saved.font||'')) opt.selected = true;
       fontSelect.appendChild(opt);
     });
-    fontSelect.addEventListener('change', () => {
-      el.style.fontFamily = fontSelect.value;
-      saveText();
-    });
+    fontSelect.addEventListener('change', () => { el.style.fontFamily = fontSelect.value; saveText(); });
     container.appendChild(fontSelect);
 
     // Bold toggle
@@ -278,7 +276,9 @@ function showDevPanel() {
         text: el.textContent,
         color: el.style.color,
         font: el.style.fontFamily,
-        bold: el.style.fontWeight==='bold'
+        bold: el.style.fontWeight==='bold',
+        left: el.style.left,
+        top: el.style.top
       }));
     }
   }
@@ -286,9 +286,13 @@ function showDevPanel() {
   function addImageControls(img) {
     const keyPrefix = `dev_img_${location.pathname}_${Array.from(document.querySelectorAll('img')).indexOf(img)}`;
     const saved = JSON.parse(localStorage.getItem(keyPrefix) || '{}');
+
     if (saved.src) img.src = saved.src;
     if (saved.rotate) img.style.transform = `rotate(${saved.rotate}deg) scale(${saved.scale||1})`;
     if (saved.opacity) img.style.opacity = saved.opacity || 1;
+    if (saved.left) img.style.position = 'absolute', img.style.left = saved.left, img.style.top = saved.top;
+
+    makeDraggable(img, keyPrefix);
 
     const container = document.createElement('div');
     container.style.marginBottom = '10px';
@@ -302,7 +306,7 @@ function showDevPanel() {
     srcInput.addEventListener('input', () => { img.src = srcInput.value; saveImg(); });
     container.appendChild(srcInput);
 
-    // Rotate input
+    // Rotate
     const rotateInput = document.createElement('input');
     rotateInput.type = 'number';
     rotateInput.value = saved.rotate||0;
@@ -312,7 +316,7 @@ function showDevPanel() {
     rotateInput.addEventListener('input', () => { updateTransform(); saveImg(); });
     container.appendChild(rotateInput);
 
-    // Scale input
+    // Scale
     const scaleInput = document.createElement('input');
     scaleInput.type = 'number';
     scaleInput.step = 0.1;
@@ -322,7 +326,7 @@ function showDevPanel() {
     scaleInput.addEventListener('input', () => { updateTransform(); saveImg(); });
     container.appendChild(scaleInput);
 
-    // Opacity slider
+    // Opacity
     const opacityInput = document.createElement('input');
     opacityInput.type = 'range';
     opacityInput.min = 0;
@@ -343,13 +347,43 @@ function showDevPanel() {
         src: img.src,
         rotate: rotateInput.value,
         scale: scaleInput.value,
-        opacity: opacityInput.value
+        opacity: opacityInput.value,
+        left: img.style.left,
+        top: img.style.top
       }));
+    }
+  }
+
+  // ===== Draggable helper =====
+  function makeDraggable(el, keyPrefix) {
+    el.style.cursor = 'move';
+    el.onmousedown = function(e) {
+      e.preventDefault();
+      const offsetX = e.clientX - el.getBoundingClientRect().left;
+      const offsetY = e.clientY - el.getBoundingClientRect().top;
+
+      function move(eMove) {
+        el.style.position = 'absolute';
+        el.style.left = (eMove.clientX - offsetX) + 'px';
+        el.style.top = (eMove.clientY - offsetY) + 'px';
+        localStorage.setItem(keyPrefix, JSON.stringify({
+          ...JSON.parse(localStorage.getItem(keyPrefix)||'{}'),
+          left: el.style.left,
+          top: el.style.top
+        }));
+      }
+
+      function stop() {
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', stop);
+      }
+
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', stop);
     }
   }
 }
 </script>
-
 
 </body>
 </html>
