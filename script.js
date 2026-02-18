@@ -28,7 +28,7 @@ function randomFill() {
   loadingBar.style.width = progress + '%';
 
   // Random next tick: 30–150ms
-  const nextTick = 30 + Math.random() * 120;
+  const nextTick = 70 + Math.random() * 120;
   setTimeout(randomFill, nextTick);
 }
 
