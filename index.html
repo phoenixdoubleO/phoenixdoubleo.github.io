@@ -186,6 +186,53 @@ function showDevPanel() {
     addImageControls(newImg);
   });
 
+  // Stack to store history
+let changeHistory = [];
+
+// Revert last change button
+const revertBtn = document.createElement('button');
+revertBtn.textContent = "Revert Last Change";
+revertBtn.style.width = "100%";
+revertBtn.style.marginTop = "10px";
+revertBtn.style.padding = "8px";
+revertBtn.style.backgroundColor = "#FF5555";
+revertBtn.style.color = "#FFF";
+revertBtn.style.border = "none";
+revertBtn.style.borderRadius = "5px";
+revertBtn.style.cursor = "pointer";
+
+revertBtn.onclick = () => {
+  if (changeHistory.length === 0) {
+    alert("No changes to revert!");
+    return;
+  }
+  const lastChange = changeHistory.pop();
+
+  if (lastChange.type === 'text') {
+    lastChange.el.textContent = lastChange.oldValue.text;
+    lastChange.el.style.color = lastChange.oldValue.color;
+    lastChange.el.style.fontFamily = lastChange.oldValue.font;
+    lastChange.el.style.fontWeight = lastChange.oldValue.bold ? 'bold' : 'normal';
+    if (lastChange.oldValue.left) {
+      lastChange.el.style.position = 'absolute';
+      lastChange.el.style.left = lastChange.oldValue.left;
+      lastChange.el.style.top = lastChange.oldValue.top;
+    }
+  } else if (lastChange.type === 'image') {
+    lastChange.el.src = lastChange.oldValue.src;
+    lastChange.el.style.transform = `rotate(${lastChange.oldValue.rotate || 0}deg) scale(${lastChange.oldValue.scale || 1})`;
+    lastChange.el.style.opacity = lastChange.oldValue.opacity || 1;
+    if (lastChange.oldValue.left) {
+      lastChange.el.style.position = 'absolute';
+      lastChange.el.style.left = lastChange.oldValue.left;
+      lastChange.el.style.top = lastChange.oldValue.top;
+    }
+  }
+};
+
+// Add button to devContent
+devContent.appendChild(revertBtn);
+
   // Initialize existing text elements
   document.querySelectorAll('h1, h2, h3, p').forEach(el => addTextControls(el));
   // Initialize existing images
