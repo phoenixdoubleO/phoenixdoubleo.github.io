@@ -74,13 +74,15 @@
 
 
 <!-- Dev mode script -->
+<!-- Dev Mode Script -->
 <script>
 let devUnlocked = false;
 
 document.addEventListener('keydown', (e) => {
+  // Ctrl + Shift + D to unlock dev mode
   if (e.ctrlKey && e.shiftKey && e.key === 'D' && !devUnlocked) {
     const password = prompt("Enter dev password:");
-    if (password === "YO") { // change this
+    if (password === "SuperSecret123") { // change this to your password
       devUnlocked = true;
       showDevPanel();
     } else {
@@ -90,12 +92,13 @@ document.addEventListener('keydown', (e) => {
 });
 
 function showDevPanel() {
+  // Create panel
   const panel = document.createElement('div');
   panel.id = "devPanel";
   panel.style.position = "fixed";
   panel.style.top = "10px";
   panel.style.right = "10px";
-  panel.style.width = "350px";
+  panel.style.width = "400px";
   panel.style.height = "80vh";
   panel.style.backgroundColor = "rgba(0,0,0,0.95)";
   panel.style.color = "#FFD700";
@@ -104,41 +107,143 @@ function showDevPanel() {
   panel.style.padding = "20px";
   panel.style.border = "3px solid #FFD700";
   panel.style.borderRadius = "10px";
-
+  panel.style.boxShadow = "0 0 15px #FFD700";
   panel.innerHTML = `
-    <h2>Dev Mode</h2>
-    <p>Edit elements on the page:</p>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2>Dev Mode</h2>
+      <button id="closeDev" style="
+        background:red;
+        color:white;
+        font-weight:bold;
+        font-size:16px;
+        border:none;
+        border-radius:50%;
+        width:30px;
+        height:30px;
+        cursor:pointer;
+      ">X</button>
+    </div>
+    <p>Edit elements live:</p>
     <div id="devContent"></div>
-    <button onclick="document.body.removeChild(document.getElementById('devPanel'));">Close</button>
   `;
-
   document.body.appendChild(panel);
 
-  // Editable text
+  // Close panel
+  document.getElementById('closeDev').addEventListener('click', () => {
+    document.body.removeChild(panel);
+  });
+
   const devContent = document.getElementById('devContent');
 
+  // Editable text (h1, h2, h3, p)
   document.querySelectorAll('h1, h2, h3, p').forEach((el, i) => {
+    const key = `dev_text_${location.pathname}_${i}`;
+    if (localStorage.getItem(key)) el.textContent = localStorage.getItem(key);
+
     const input = document.createElement('input');
     input.type = "text";
     input.value = el.textContent;
     input.style.width = "100%";
     input.style.marginBottom = "5px";
-    input.addEventListener('input', () => el.textContent = input.value);
+    input.addEventListener('input', () => {
+      el.textContent = input.value;
+      localStorage.setItem(key, input.value);
+    });
     devContent.appendChild(input);
   });
 
   // Editable images
   document.querySelectorAll('img').forEach((img, i) => {
+    const key = `dev_img_${location.pathname}_${i}`;
+    if (localStorage.getItem(key)) img.src = localStorage.getItem(key);
+
     const input = document.createElement('input');
     input.type = "text";
     input.value = img.src;
     input.style.width = "100%";
     input.style.marginBottom = "5px";
-    input.addEventListener('input', () => img.src = input.value);
+    input.addEventListener('input', () => {
+      img.src = input.value;
+      localStorage.setItem(key, input.value);
+    });
     devContent.appendChild(input);
   });
+
+  // Editable button links
+  document.querySelectorAll('button[onclick]').forEach((btn, i) => {
+    const key = `dev_btn_${location.pathname}_${i}`;
+    const onclick = btn.getAttribute('onclick');
+    if (localStorage.getItem(key)) btn.setAttribute('onclick', localStorage.getItem(key));
+
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = onclick;
+    input.style.width = "100%";
+    input.style.marginBottom = "5px";
+    input.addEventListener('input', () => {
+      btn.setAttribute('onclick', input.value);
+      localStorage.setItem(key, input.value);
+    });
+    devContent.appendChild(input);
+  });
+
+  // Optional: Editable carousel images & names
+  document.querySelectorAll('.carousel img').forEach((img, i) => {
+    const key = `dev_carousel_img_${location.pathname}_${i}`;
+    if (localStorage.getItem(key)) img.src = localStorage.getItem(key);
+
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = img.src;
+    input.placeholder = "Carousel image src";
+    input.style.width = "100%";
+    input.style.marginBottom = "5px";
+    input.addEventListener('input', () => {
+      img.src = input.value;
+      localStorage.setItem(key, input.value);
+    });
+    devContent.appendChild(input);
+  });
+
+  document.querySelectorAll('.carousel h1, .carousel h2').forEach((el, i) => {
+    const key = `dev_carousel_title_${location.pathname}_${i}`;
+    if (localStorage.getItem(key)) el.textContent = localStorage.getItem(key);
+
+    const input = document.createElement('input');
+    input.type = "text";
+    input.value = el.textContent;
+    input.placeholder = "Carousel title";
+    input.style.width = "100%";
+    input.style.marginBottom = "5px";
+    input.addEventListener('input', () => {
+      el.textContent = input.value;
+      localStorage.setItem(key, input.value);
+    });
+    devContent.appendChild(input);
+  });
+
+  // Export HTML button
+  const exportBtn = document.createElement('button');
+  exportBtn.textContent = "Export HTML";
+  exportBtn.style.width = "100%";
+  exportBtn.style.marginTop = "10px";
+  exportBtn.style.padding = "8px";
+  exportBtn.style.backgroundColor = "#FFD700";
+  exportBtn.style.color = "#000";
+  exportBtn.style.border = "none";
+  exportBtn.style.borderRadius = "5px";
+  exportBtn.style.cursor = "pointer";
+  exportBtn.onclick = () => {
+    const blob = new Blob([document.documentElement.outerHTML], { type: "text/html" });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = "index.html";
+    link.click();
+  };
+  devContent.appendChild(exportBtn);
 }
 </script>
+
 
 </body>
 </html>
